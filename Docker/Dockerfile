@@ -1,1 +1,1 @@
-//Pythonのバージョン固定
+From Python:3.9
