@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  db:
+    container_name: MySQL
+    build: 
+      context: .
+      dockerfile: Docker/mysql/dockerfile
+      # volumes: data:/var/lib/mysql
+      environment:
+        - MYSQL_ROOT_PASSWORD=pass
+        - MYSQL_DATABASE=shopping_remind_app
+        - MYSQL_USER=testuser
+        - MYSQL_PASSWORD=testpass
+
+  app:
+    container_name: Django
+    build:
+      context: .
+      dockerfile: Docker/Django/dockerfile
+     # volumes: ./src:/app/src
+      ports: 
+        - "8080:8080"
+
+# volumes:
+  # data:
+      
+
