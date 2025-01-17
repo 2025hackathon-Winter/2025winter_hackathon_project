@@ -4,22 +4,22 @@ services:
     container_name: MySQL
     build: 
       context: .
-      dockerfile: Docker/mysql/dockerfile
+      dockerfile: Docker/mysql/Dockerfile
       # volumes: data:/var/lib/mysql
-      environment:
-        - MYSQL_ROOT_PASSWORD=pass
-        - MYSQL_DATABASE=shopping_remind_app
-        - MYSQL_USER=testuser
-        - MYSQL_PASSWORD=testpass
+    environment:
+      - MYSQL_ROOT_PASSWORD=pass
+      - MYSQL_DATABASE=shopping_remind_app
+      - MYSQL_USER=testuser
+      - MYSQL_PASSWORD=testpass
 
   app:
     container_name: Django
     build:
       context: .
-      dockerfile: Docker/Django/dockerfile
+      dockerfile: Docker/Django/Dockerfile
      # volumes: ./src:/app/src
-      ports: 
-        - "8080:8080"
+    ports: 
+      - "8000:8000"
 
 # volumes:
   # data:
