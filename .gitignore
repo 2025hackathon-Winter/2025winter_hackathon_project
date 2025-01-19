@@ -1,0 +1,17 @@
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+
+.DS_Store
+.AppleDouble
+.LSOverride
+
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+**/__pycache__/**
+*.pyc

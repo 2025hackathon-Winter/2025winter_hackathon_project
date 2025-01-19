@@ -1,0 +1,44 @@
+version: "3.9"
+services:
+  db:
+    container_name: MySQL
+    ports: 
+      - 3306
+    build: 
+      context: .
+      dockerfile: Docker/mysql/Dockerfile
+      # volumes: data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=pass
+      - MYSQL_DATABASE=shopping_remind_app
+      - MYSQL_USER=testuser
+      - MYSQL_PASSWORD=testpass
+    healthcheck:
+    # pingでmysqlにアクセスできるか見ている
+      test: [
+        "CMD-SHELL",
+        "mysqladmin ping -h localhost -u ${MYSQL_USER} -p${MYSQL_PASSWORD} || exit 1",
+        ]
+      # testを実行する間隔を指定
+      interval: 10s
+      # テストコマンドがタイムアウトするまでの時間を指定
+      timeout: 5s
+      # testが失敗した場合に再試行する回数を指定
+      retries: 5
+
+  app:
+    container_name: Django
+    build:
+      context: .
+      dockerfile: Docker/Django/Dockerfile
+     # volumes: ./src:/app/src
+    ports: 
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+# volumes:
+  # data:
+      
+
