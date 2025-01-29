@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8"> <!--文字コードの指定-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Wasurenu{% endblock title%}</title>
+    <meta name="description" content="ご自宅にある日用品や食品の在庫管理が簡単にできるWEBアプリです。">
+    <meta property="og:sote_name" content="Wasurenu"> <!--共有時のサイト名をするタグ -->
+    <meta property="og:site_name" content="Wasurenu"> <!--サイト名を指定するタグ-->
+
+    <link rel="icon" href=""> <!--ファビコンのURL-->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+    <header>
+        <div class="header-inner">
+            {% block header %}Wasurenu{% endblock header %}
+    
+            <nav class="header-nav nav" id="js-nav">
+                <ul class="nav__items nav-items">
+                    <li class="nav-items__item"><a href="">新規物品登録</a></li>
+                    <li class="nav-items__item"><a href="">設定</a></li>
+                    <li class="nav-items__item"><a href="">ログアウト</a></li>
+                    <li class="nav-items__item"><a href="">お問い合わせ</a></li>
+                </ul>
+            </nav>
+
+        <button class="header-hamburger hamburger" id="js-hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        </div>
+    </header>
+    {% block content %}
+    {% endblock content %}
+    <script src="{% static 'javascript/hamburger.js' %}"></script>
+</html>

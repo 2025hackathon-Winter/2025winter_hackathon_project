@@ -1,0 +1,118 @@
+
+.menu-container{
+    display: inline;
+    align-items: center;
+    text-align: center;
+}
+
+.search-container{
+    margin: 62px 0;
+}
+
+.search-container input{
+    width: 240px;
+    height: 40px;
+}
+
+.search-container button{
+    width: 60px;
+    height: 40px;
+}
+
+.list-container div{
+    display: inline;
+}
+
+.list-container button{
+    width: 124px;
+    height: 40px;
+}
+
+
+.tabs{
+    padding-bottom: 8px;
+    background-color: var(--pale_gray);
+    width: 348px;
+    margin: 0 auto;
+    margin-top: 24px;
+}
+
+.tab-label{
+    width: calc(100%/4);
+    height: 30px;
+    padding-top: 8px;
+    border-bottom: 3px solid var(--dark_orenge);
+    background-color: var(--pale_orenge);
+    line-height: 24px;
+    text-align: center;
+    color: var(--words_gray);
+    display: block;
+    float: left;
+    text-align: center;
+    font-weight: bold;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.tab-label:hover{
+    background-color: var(--orenge);
+}
+
+/*ラジオボタンを全て消す*/
+input[name="tab-label"] {
+    display: none;
+  }
+
+/*タブ切り替えの中身のスタイル*/
+.tab-content{
+    display: none;
+    padding: 8px 8px 0;
+    clear: both;
+    overflow: hidden;
+}
+
+/*選択されているタブのコンテンツのみを表示*/
+#all:checked ~ #all-content,
+#daily-item:checked ~ #daily-content,
+#food:checked ~ #food-content,
+#others:checked ~ #others-content{
+  display: block;
+}
+
+/*選択されているタブのスタイルを変える*/
+.tabs input:checked + .tab-label {
+    background-color: var(--dark_orenge);
+    color: #fff;
+  }
+
+.tabs button {
+    width:60px;
+    height: 40px;
+    background: var(--white);
+    color: var(--greenbule);
+    border: 1px solid var(--greenbule);
+}
+
+.tabs button:hover {
+    background: var(--pale_gray);
+}
+
+.item{
+    display: flex; /* フレックスボックスで横並びに配置 */
+    justify-content: space-between; /* 左右に要素を配置 */
+    align-items: center; /* 縦方向を中央揃え */
+    margin-bottom: 8px; /* 各リストアイテムの間に余白 */
+    border-bottom: 1px solid var(--dark_glay); /* 見やすくするための区切り線 */
+    padding-bottom: 8px;
+}
+
+.item p{
+    float: left;
+    padding-bottom: 4px;
+}
+
+.item span{
+    float: left;
+    font-size: 12px;
+    padding-left: 24px;
+}
