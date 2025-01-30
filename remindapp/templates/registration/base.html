@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8"> <!--文字コードの指定-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Wasurenu{% endblock title%}</title>
+    <meta name="description" content="ご自宅にある日用品や食品の在庫管理が簡単にできるWEBアプリです。">
+    <meta property="og:sote_name" content="Wasurenu"> <!--共有時のサイト名をするタグ -->
+    <meta property="og:site_name" content="Wasurenu"> <!--サイト名を指定するタグ-->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+    <link rel="icon" href=""> <!--ファビコンのURL-->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+    {% block header %}
+    <header>
+        Wasurenu
+    </header>
+    {% endblock header %}
+    
+    
+    
+
+    {% block content %}
+    <body>
+        
+    </body>
+    {% endblock content %}
+</html>

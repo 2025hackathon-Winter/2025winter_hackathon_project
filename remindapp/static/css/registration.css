@@ -1,0 +1,32 @@
+
+.registration-container {
+    display: inline;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.registration-input {
+    width: 240px;
+    height: 40px;
+}
+
+.registration-container h1{
+    font-size: 24px;
+    margin-top: 100px;
+    margin-bottom: 20px;
+}
+
+.registration-container p{
+    margin-bottom: 40px;
+}
+
+/* ログイン画面の新規登録との空白　*/
+.signup-button{
+    margin-bottom: 40px;
+}
+
+/* 新規登録画面とログイン画面へ戻るの空白*/
+.login-back{
+    margin-bottom: 40px;
+}

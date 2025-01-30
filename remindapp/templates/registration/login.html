@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}ログイン画面{% endblock title %}
+
+
+{% block content %}
+<body>
+    <div class="registration-container"> 
+        <div>
+            <form action="./menu/{ **** }" method="post"> {% csrf_token %} <!--actionにどこにデータを投げるか指定する。menuはユーザーごとに違う -->
+            <h1>ログイン</h1>
+            <p>
+                <input class="registration-input" type="email" placeholder=" E-mail" required>
+            </p>
+            <P>
+                <input class="registration-input" type="password" placeholder=" パスワード" required>
+            </P>
+            <button class="signup-button" type="submit">ログイン</button> <!--buttonタグにtype=submitを記載しなくても、標準でついてる　わかりやすさ重視で書いておく-->
+            </form>
+                <a href="/signup">
+                    <button type="button">新規登録</button> 
+                </a>
+        </div>
+        
+    </div>
+   
+</body>
+
+{% endblock content %}
