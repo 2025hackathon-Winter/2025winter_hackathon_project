@@ -2,6 +2,7 @@ version: "3.9"
 services:
   db:
     container_name: MySQL
+    platform: linux/amd64
     ports: 
       - 3306
     build: 
@@ -32,6 +33,9 @@ services:
       context: .
       dockerfile: Docker/Django/Dockerfile
      # volumes: ./src:/app/src
+    #  追加
+    volumes:
+      - ./remindapp/templates:/app/remindapp/templates
     ports: 
       - "8000:8000"
     depends_on:
