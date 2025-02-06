@@ -7,7 +7,11 @@
 <body>
     <div class="registration-container"> 
         <div>
-            <form action="./menu/{ **** }" method="post"> {% csrf_token %} <!--actionにどこにデータを投げるか指定する。menuはユーザーごとに違う -->
+            
+            <!-- <form action="./menu/{ **** }" method="post"> {% csrf_token %} actionにどこにデータを投げるか指定する。menuはユーザーごとに違う -->
+            <!-- {{ form.as_p }} -->
+            <form action="{% url 'menu' %}" method="post"> {% csrf_token %} <!--actionにどこにデータを投げるか指定する。menuはユーザーごとに違う -->
+
             <h1>ログイン</h1>
             <p>
                 <input class="registration-input" type="email" placeholder=" E-mail" required>
