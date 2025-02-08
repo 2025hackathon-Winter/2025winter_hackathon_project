@@ -6,9 +6,9 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth.views import LogoutView
 
 
-def helloworldfunction(reqest):
-    returnedobject = HttpResponse('<h1>hello world</h1>')
-    return returnedobject
+# def helloworldfunction(reqest):
+#     returnedobject = HttpResponse('<h1>hello world</h1>')
+#     return returnedobject
 
 # 2025/2/1 うっちゃん追加　ログイン成功後ルーティング
 def index(request):    # ブラウザからアクセスがあった時の処理

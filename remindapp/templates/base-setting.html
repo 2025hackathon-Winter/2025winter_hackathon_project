@@ -11,29 +11,26 @@
     <link rel="icon" href=""> <!--ファビコンのURL-->
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
     <header>
-        <div class="header-inner">
+        <div>
             {% block header %}Wasurenu{% endblock header %}
-    
-            <nav class="header-nav nav" id="js-nav">
-                <ul class="nav__items nav-items">
-                    <li class="nav-items__item"><a href="">新規物品登録</a></li>
-                    <li class="nav-items__item"><a href="">設定</a></li>
-                    <li class="nav-items__item"><a href="">ログアウト</a></li>
-                    <li class="nav-items__item"><a href="">お問い合わせ</a></li>
-                </ul>
-            </nav>
-
-        <button class="header-hamburger hamburger" id="js-hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
         </div>
+        <div class="home-button-container">
+            <form action="/menu/">
+                <button class="home-button" aria-label="ホームに戻る">
+                    <span class="material-icons icon-size">home</span>
+                </button>
+            </form>
+        </div>   
     </header>
+    
+    
+
     {% block content %}
     {% endblock content %}
     <script src="{% static 'javascript/hamburger.js' %}"></script>
+    <script src="{% static 'javascript/count.js' %}"></script>
     <script src="{% static 'javascript/modal.js' %}"></script>
 </html>
