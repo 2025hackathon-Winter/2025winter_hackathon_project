@@ -1,0 +1,108 @@
+{% extends 'base-menu.html' %}
+
+{% block title %}メニュー画面{% endblock title %}
+
+
+{% block content %}
+<body>
+    <div class="menu-container">
+        <search class="search-container">
+            <form action="./〇〇/{ **** }" method="POST">{% csrf_token %} <!--actionにどこにデータを投げるか指定する。menuはユーザーごとに違う -->
+                <input type="text" placeholder="管理物品の検索">
+                <button type="button">登録</button>    
+            </form>
+        </search>  
+    
+        <div>
+            <div class="list-container">
+                <div>管理物品一覧</div>
+                <button type="button">次回購入期限順</button>
+                <button type="button">最近買った順</button>
+            </div>
+            
+            <div class="tabs">
+            
+                <input type="radio" id="all" name="tab-label" checked>
+                <label class="tab-label" for="all">ALL</label>
+            
+                <input type="radio" id="daily-item" name="tab-label">
+                <label class="tab-label" for="daily-item">日用品</label>
+            
+                <input type="radio" id="food" name="tab-label">
+                <label class="tab-label" for="food">食品</label>
+            
+                <input type="radio" id="others" name="tab-label">
+                <label class="tab-label" for="others">その他</label>
+        
+                <div  class="tab-content" id="all-content">
+                     <!--以下バックエンドに値に置き換える-->
+                    <div class="item">
+                        <div>
+                            <p>全ての管理物品｛｝</p><br> <!--ALLのリスト-->
+                            <span>購入日｛｝</span><br>
+                            <span>次回購入予定｛｝</span>
+                        </div>
+                        <div>
+                            <button type="button">買った</button>
+                            <button id="js-modal-open">延長</button>
+                            {% include 'menu-modal.html' %}
+                        </div>      
+                    </div>
+                    <div class="item"> <!--※後ほど消す予定-->
+                        <div>
+                            <p>〇ケチャップ</p><br> <!--ALLのリスト-->
+                            <span>購入日 2025/01/26</span><br>
+                            <span>次回購入予定 2025/03/26</span>
+                        </div>
+                            <div>
+                            <button type="button">買った</button>
+                            <button type="button">延長</button>
+                        </div>      
+                    </div>
+                </div>
+                <div class="tab-content" id="daily-content">
+                    <div class="item">
+                        <div>
+                            <p>トイレットペーパー｛｝</p><br> <!--日用品のリスト-->
+                            <span>購入日｛｝</span><br>
+                            <span>次回購入予定｛｝</span>
+                        </div>
+                        <div>
+                            <button type="button">買った</button>
+                            <button type="button">延長</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content" id="food-content">
+                    <div class="item">
+                        <div>
+                            <p>ケチャップfffffff</p><br> <!--食品のリスト-->
+                            <span>購入日｛｝</span><br>
+                            <span>次回購入予定｛｝</span>
+                        </div>
+                        <div>
+                            <button type="button">買った</button>
+                            <button type="button">延長</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content" id="others-content">
+                    <div class="item">
+                        <div>
+                            <p>子供の鉛筆｛｝</p><br> <!--その他のリスト-->
+                            <span>購入日｛｝</span><br>
+                            <span>次回購入予定｛｝</span>
+                        </div>
+                        <div>
+                            <button type="button">買った</button>
+                            <button type="button">延長</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+</body>
+
+{% endblock content %}

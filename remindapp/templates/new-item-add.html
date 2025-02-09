@@ -1,0 +1,52 @@
+{% extends 'base-setting.html' %}
+{% load static %}
+
+{% block customcss %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
+{% endblock customcss %}
+
+{% block title %}新規物品登録画面{% endblock title %}
+
+
+{% block content %}
+<body>
+    <div class="new-name-container">
+        <h1>新規物品登録</h1>
+        <div>管理したい物品を登録できます</div>
+    </div>
+    
+    <div class="add-item-container">
+        <form action="" method="post"> {% csrf_token %} <!--actionにどこにデータを投げるか指定する。menuはユーザーごとに違う -->
+        <div class="add-item-input"> 
+            <label for="new">新規物品の入力</label>
+            <input type="text" id="new" placeholder="管理物品名">
+        </div>    
+        <div>
+            <label>期間入力</label>
+            <div class="item-period-container">
+                <button type="button" id="js-decrement">-</button>
+                <span class="count">0</span>
+                <button type="button" id="js-increment">+</button> 
+                <small>週間後</small>
+            </div>
+           
+        </div> 
+        <div class="item-category-container">
+            <label for="category">カテゴリ</label>
+            <select name="category" id="category">
+                <option value="">カテゴリを入力</option>
+                <option value="1">日用品</option>
+                <option value="1">食品</option>
+                <option value="1">その他</option>
+            </select>
+        </div>
+        
+            <button type="submit">登録</button>
+        </form>
+    </div>
+       
+    
+   
+</body>
+
+{% endblock content %}

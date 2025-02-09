@@ -1,0 +1,58 @@
+{% extends 'base-setting.html' %}
+{% load static %}
+
+{% block customcss %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
+{% endblock customcss %}
+
+{% block title %}設定{% endblock title %}
+
+
+{% block content %}
+<body>
+    <div class="setting-container">
+            <form action="" method="POST"> {% csrf_token %} <!--actionにどこにデータを投げるか指定する。menuはユーザーごとに違う -->
+                <label>次回購入までの期間の一括設定</label>
+                <div class="default-period">
+                    <button type="button" id="js-decrement">-</button>
+                    <span class="count">0</span>
+                    <button type="button" id="js-increment">+</button> 
+                    <small>週間後</small>
+                </div>
+                
+            </form> 
+        
+        <div>
+            <form action="" method="POST">
+                <label for="alert">通知設定</label>
+                <select name="week" id="alert">
+                    <option value="">通知する曜日を入力</option>
+                    <option value="1">月曜日</option>
+                    <option value="2">火曜日</option>
+                    <option value="3">水曜日</option>
+                    <option value="4">木曜日</option>
+                    <option value="5">金曜日</option>
+                    <option value="6">土曜日</option>
+                    <option value="7">日曜日</option>
+                    <option value="8">毎日</option>
+                </select>
+            </form>      
+        </div>
+        <div>
+            <form action="" method="POST">{% csrf_token %}
+                <label for="">期間初期化</label>
+                <button id="js-modal-open" type="button">次回購入までの期間を初期化</button>
+                {% include 'reset-modal.html' %}
+            </form>
+        </div>
+        <div>
+            <form action="" method="POST">{% csrf_token %}
+                <label for="">メールアドレス・パスワードの変更</label> <!--モーダル-->
+                <button id="js-modal-open" type="button">変更する</button>   
+                {% include 'personal-info-modal.html' %}  
+            </form>
+        </div>
+    </div>
+</body>
+
+{% endblock content %}
