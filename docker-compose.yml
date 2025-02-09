@@ -8,7 +8,9 @@ services:
     build: 
       context: .
       dockerfile: Docker/mysql/Dockerfile
-      # volumes: data:/var/lib/mysql
+    #Docker ボリューム mysql_data に /var/lib/mysql のデータが保存され、コンテナを削除してもデータが保持される
+    volumes: 
+      - mysql_data:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=pass
       - MYSQL_DATABASE=shopping_remind_app
@@ -35,14 +37,16 @@ services:
      # volumes: ./src:/app/src
     #  追加
     volumes:
-      - ./remindapp/templates:/app/remindapp/templates
+      - ./remindapp:/app/remindapp # プロジェクト全体をマウント　→以前の記述- ./remindapp/templates:/app/remindapp/templates
+      #- ./remindapp/static:/app/remindapp/static 
     ports: 
       - "8000:8000"
     depends_on:
       db:
         condition: service_healthy
 
-# volumes:
-  # data:
+# mysql_data という Docker Volumeを作成 →　他のコンテナで下記Volumeが利用できるようになる。
+volumes:
+    mysql_data:
       
 
