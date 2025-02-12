@@ -8,4 +8,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # path('remind/', include('remind.urls')), 
     path('', include('remind.urls')),  # remind アプリのURLを統合
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])

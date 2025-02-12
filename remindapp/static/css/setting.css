@@ -1,0 +1,47 @@
+
+.setting-container{
+    text-align: center;
+}
+
+.setting-container label{
+    display: block;
+    margin-top: 48px;
+    margin-bottom: 8px;
+}
+
+.setting-container section{
+    display: block;
+}
+
+.default-period{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 40px;
+}
+
+
+.default-period button{
+    display: inline;
+    color: var(--white);
+    background-color: var(--black);
+    width: 28px;
+    height: 40px;
+    border-radius: 0;
+}
+
+.default-period small{
+    margin-left: 8px;
+    margin-top: 20px;
+}
+
+/* new-item.cssで制御。countで同じ記載あります。 */
+/* .count{ 
+    color: var(--white);
+    background-color: var(--black);
+    width: 28px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    margin: 2px;
+} */
