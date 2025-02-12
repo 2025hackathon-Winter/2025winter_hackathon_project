@@ -41,14 +41,14 @@
         <div>
             <form action="" method="POST">{% csrf_token %}
                 <label for="">期間初期化</label>
-                <button id="js-modal-open" type="button">次回購入までの期間を初期化</button>
+                <button id="js-reset-modal-open" type="button">次回購入までの期間を初期化</button>
                 {% include 'reset-modal.html' %}
             </form>
         </div>
         <div>
             <form action="" method="POST">{% csrf_token %}
                 <label for="">メールアドレス・パスワードの変更</label> <!--モーダル-->
-                <button id="js-modal-open" type="button">変更する</button>   
+                <button id="js-personal-modal-open" type="button">変更する</button>   
                 {% include 'personal-info-modal.html' %}  
             </form>
         </div>
