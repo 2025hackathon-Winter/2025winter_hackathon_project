@@ -38,25 +38,28 @@
                      <!--以下バックエンドに値に置き換える-->
                     <div class="item">
                         <div>
-                            <p>全ての管理物品｛｝</p><br> <!--ALLのリスト-->
-                            <span>購入日｛｝</span><br>
-                            <span>次回購入予定｛｝</span>
+                            {% for goods_name in goods_names %}
+                            <p class="js-modal-open">全ての管理物品{{ goods_name }}</p><br> <!--ALLのリスト-->
+                            <span>購入日{{ next_next_purchase_data }}</span><br>
+                            <span>次回購入予定{{ firstterm }}</span>
+                            {% endfor %}
+                            {% include 'menu-modal.html' %}
                         </div>
                         <div>
                             <button type="button">買った</button>
-                            <button id="js-modal-open">延長</button>
-                            {% include 'menu-modal.html' %}
+                            <button type="button">延長</button>  
                         </div>      
                     </div>
                     <div class="item"> <!--※後ほど消す予定-->
                         <div>
-                            <p>〇ケチャップ</p><br> <!--ALLのリスト-->
-                            <span>購入日 2025/01/26</span><br>
-                            <span>次回購入予定 2025/03/26</span>
+                            <p class="js-modal-open">全ての管理物品</p><br> <!--ALLのリスト-->
+                            <span>購入日</span><br>
+                            <span>次回購入予定</span>
+                            {% include 'menu-modal.html' %}
                         </div>
-                            <div>
+                        <div>
                             <button type="button">買った</button>
-                            <button type="button">延長</button>
+                            <button type="button">延長</button>  
                         </div>      
                     </div>
                 </div>

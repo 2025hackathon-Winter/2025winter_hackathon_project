@@ -3,6 +3,7 @@ from django.urls import path
 # from .views import HelloWorldClass
 from .views import CustomLoginView, UserCreateView
 from .views import CustomLogoutView
+from .views import menuview
 from . import views # 2025/1/31　うっちゃん追加
 from django.contrib.auth import views as auth_views # 2025/1/31　うっちゃん追加
 

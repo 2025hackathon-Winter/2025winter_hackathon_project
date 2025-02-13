@@ -32,7 +32,7 @@ class CustomLogoutView(LogoutView):
 
     
 def menuview(request):
-    return render(request,'login2.html')
+  return render(request,'menu.html') 
 
 # サインアップ　2025/2/13 MANA追記
 class UserCreateView(CreateView):
