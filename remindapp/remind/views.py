@@ -29,7 +29,7 @@ class CustomLogoutView(LogoutView):
 
     
 def menuview(request):
-    return render(request,'login2.html')
+    return render(request,'menu.html') 
     
 
 class HelloWorldClass(TemplateView):
