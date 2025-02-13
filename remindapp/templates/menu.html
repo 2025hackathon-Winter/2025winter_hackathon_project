@@ -38,14 +38,14 @@
                      <!--以下バックエンドに値に置き換える-->
                     <div class="item">
                         <div>
-                            <p>全ての管理物品｛｝</p><br> <!--ALLのリスト-->
+                            <p class="js-modal-open">全ての管理物品｛｝</p><br> <!--ALLのリスト-->
                             <span>購入日｛｝</span><br>
                             <span>次回購入予定｛｝</span>
+                            {% include 'menu-modal.html' %}
                         </div>
                         <div>
                             <button type="button">買った</button>
-                            <button id="js-modal-open">延長</button>
-                            {% include 'menu-modal.html' %}
+                            <button type="button">延長</button>  
                         </div>      
                     </div>
                     <div class="item"> <!--※後ほど消す予定-->

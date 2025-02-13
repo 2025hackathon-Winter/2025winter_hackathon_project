@@ -109,6 +109,12 @@ input[name="tab-label"] {
 .item p{
     float: left;
     padding-bottom: 4px;
+    transition: .2s;
+    cursor: pointer;
+}
+
+.item p:hover{
+    transform: scale(1.05);
 }
 
 .item span{
