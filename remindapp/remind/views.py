@@ -1,9 +1,12 @@
 from django.shortcuts import render
 from pathlib import Path
 from django.http import HttpResponse
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, CreateView
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.views import LogoutView
+from django.urls import reverse_lazy
+from .models import CustomUsers
+from .forms import CustomUsersCreationForm
 
 
 # def helloworldfunction(reqest):
@@ -30,6 +33,13 @@ class CustomLogoutView(LogoutView):
     
 def menuview(request):
     return render(request,'login2.html')
+
+# サインアップ　2025/2/13 MANA追記
+class UserCreateView(CreateView):
+    model = CustomUsers
+    form_class = CustomUsersCreationForm
+    template_name = 'registration/signup.html'
+    success_url = reverse_lazy('remind:login')
     
 
 class HelloWorldClass(TemplateView):
