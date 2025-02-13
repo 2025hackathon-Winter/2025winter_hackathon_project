@@ -8,14 +8,14 @@
       <!-- モーダル内部のコンテンツ -->
       <div class="modal-content">
           <div>
-            <p>ケチャップ</p>
+            <p>ケチャップ{{ goods_name }}</p>
             <button type="submit">編集</button>
              <!--ALLのリスト-->
             <div>
-              <span>購入日:2025/01/26{}</span><br>
-              <span>賞味期限:2025/03/26{}</span><br>
-              <span>次回購入予定:2025/03/26{}</span><br>
-              <span>次回購入までに期間:2か月{}</span>
+              <span>購入日:2025/01/26{{ purchase_data }}</span><br>
+              <span>賞味期限:2025/03/26{{ expire_date }}</span><br>
+              <span>次回購入予定:2025/03/26{{ next_purchase_data }}</span><br>
+              <span>次回購入までに期間:2か月{{ defaultterm_nextpurchase }}</span>
             </div>
           </div>
       </div>
