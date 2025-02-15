@@ -12,20 +12,20 @@
 <body>
     <div class="registration-container">
         <div>
-            <form action="./menu/{ **** }" method="post"> {% csrf_token %}<!--actionにどこにデータを投げるか指定する。menuはユーザーごとに違う -->
+            <form action="{% url 'remind:signup' %}" method="post"> {% csrf_token %}<!--actionにどこにデータを投げるか指定する。menuはユーザーごとに違う -->
                 <h1>新規登録画面</h1>
                 <p>
-                    <input class="registration-input" type="email" placeholder=" E-mail" required>
+                    <input class="registration-input" type="email" name="mailaddress" placeholder=" E-mail" required>
                 </p>
                 <P>
-                    <input class="registration-input" type="password" placeholder=" パスワード" required>
+                    <input class="registration-input" type="password" name="password1" placeholder=" パスワード" required>
                 </P>
                 <P>
-                    <input class="registration-input" type="password" placeholder=" パスワード確認用" required>
+                    <input class="registration-input" type="password" name="password2" placeholder=" パスワード確認用" required>
                 </P>
                 <button class="login-back" type="submit">新規登録</button> <!--buttonタグにtype=submitを記載しなくても、標準でついてる　わかりやすさ重視で書いておく-->
             </form>
-                <a href="/login">ログイン画面へ戻る</a>
+                <a href="{% url 'remind:login' %}">ログイン画面へ戻る</a>
         </div>
         
     </div>
