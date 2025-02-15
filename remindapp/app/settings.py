@@ -44,7 +44,7 @@ ROOT_URLCONF = 'app.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'remindapp/templates'],
+        'DIRS': [BASE_DIR / './templates'], #base_dir間違っているので修正
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -113,7 +113,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "remindapp", "static"),]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"),] #修正
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
