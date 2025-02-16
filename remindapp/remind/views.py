@@ -7,6 +7,10 @@ from django.contrib.auth.views import LogoutView
 from django.urls import reverse_lazy
 from .models import CustomUsers
 from .forms import CustomUsersCreationForm
+from django.contrib.auth import authenticate, login
+from django.shortcuts import redirect
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import get_user_model
 
 
 # def helloworldfunction(reqest):
@@ -17,15 +21,30 @@ from .forms import CustomUsersCreationForm
 def index(request):    # ブラウザからアクセスがあった時の処理
     return HttpResponse("Hello, world. You're at the polls index.")
 
+# ログイン
+User = get_user_model()
+
+class CustomAuthenticationForm(AuthenticationForm):
+    def clean(self):
+        email = self.cleaned_data.get("username")  # フォームの入力を `email` に変更
+        password = self.cleaned_data.get("password")
+
+        if email and password:
+            try:
+                user = User.objects.get(mailaddress=email)
+            except User.DoesNotExist:
+                self.add_error("username", "このメールアドレスは登録されていません。")
+                return
+            
+            user = authenticate(mailaddress=email, password=password)
+            if user is None:
+                self.add_error("password", "パスワードが間違っています。")
+        
+        return self.cleaned_data
+
 class CustomLoginView(LoginView):
     template_name = 'registration/login.html'
-    
-    # def form_valid(self, form):
-    #     user = form.get_user()
-    #     print(user)
-
-    #     # 入力値がDBにいるか検証
-    next_page = 'logout'
+    authentication_form = CustomAuthenticationForm
 
 class CustomLogoutView(LogoutView):
     next_page = '/login/'
@@ -33,6 +52,9 @@ class CustomLogoutView(LogoutView):
     
 def menuview(request):
   return render(request,'menu.html') 
+
+def MyitemsAdd(request):
+  return render(request,'new-item-add.html') 
 
 # サインアップ　2025/2/13 MANA追記
 class UserCreateView(CreateView):

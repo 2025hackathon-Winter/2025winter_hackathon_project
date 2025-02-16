@@ -15,7 +15,8 @@ urlpatterns = [
     path('login/', CustomLoginView.as_view(), name='login'),
     path('logout/',CustomLogoutView.as_view(),name='logout'),
     path('menu/', views.menuview, name='menu'),
-    path('', views.index, name='index'), # 2025/1/31　うっちゃん追加
+    path('myitems/add/', views.MyitemsAdd, name='myitems-add'), # 2025/2/16 うっちゃん追記 新規登録画面
+    path('', views.index, name='index'), 
     # path('admin/', admin.site.urls),
     # path('hello/', HelloWorldClass.as_view())
 ]

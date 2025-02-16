@@ -10,14 +10,30 @@
             
             <!-- <form action="./menu/{ **** }" method="post"> {% csrf_token %} actionにどこにデータを投げるか指定する。menuはユーザーごとに違う -->
             <!-- {{ form.as_p }} -->
-            <form action="{% url 'remind:menu' %}" method="post"> {% csrf_token %} <!--actionにどこにデータを投げるか指定する。menuはユーザーごとに違う -->
+            <!-- <form action="{% url 'remind:menu' %}" method="post"> {% csrf_token %} actionにどこにデータを投げるか指定する。menuはユーザーごとに違う -->
+            <form action="{% url 'remind:login' %}" method="post"> 
+                {% csrf_token %} 
 
             <h1>ログイン</h1>
+
+            <!-- フォーム全体のエラー表示 -->
+            {% if form.errors %}
+                <div class="error-summary">
+                    <ul>
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
             <p>
-                <input class="registration-input" type="email" placeholder=" E-mail" required>
+                <input class="registration-input" type="email" name="username" placeholder=" E-mail" required>
             </p>
             <P>
-                <input class="registration-input" type="password" placeholder=" パスワード" required>
+                <input class="registration-input" type="password" name="password" placeholder=" パスワード" required>
             </P>
             <button class="signup-button" type="submit">ログイン</button> <!--buttonタグにtype=submitを記載しなくても、標準でついてる　わかりやすさ重視で書いておく-->
             </form>
