@@ -53,7 +53,7 @@ class UsersManager(BaseUserManager):
 
 # カスタムユーザーモデル
 class CustomUsers(AbstractBaseUser, PermissionsMixin):
-    mailaddress = models.EmailField(unique=True)  # メールアドレスを必須にする
+    mailaddress = models.EmailField(unique=True, verbose_name="メールアドレス")  # メールアドレスを必須にする　verbose_name=""→adminの管理画面での表記を変更できる
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     password = models.CharField(

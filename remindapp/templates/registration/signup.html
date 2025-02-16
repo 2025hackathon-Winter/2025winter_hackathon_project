@@ -12,29 +12,27 @@
 <body>
     <div class="registration-container">
         <div>
-            <form action="{% url 'remind:signup' %}" method="post"> {% csrf_token %}<!--actionにどこにデータを投げるか指定する。menuはユーザーごとに違う -->
+            <form method="post"> {% csrf_token %}<!--actionにどこにデータを投げるか指定する。menuはユーザーごとに違う -->
                 <h1>新規登録画面</h1>
                 <p>
-                    <input class="registration-input" type="email" name="mailaddress" placeholder=" E-mail" required>
+                    <span>{{ form.mailaddress }}</span>
                 </p>
                 <P>
-                    <input class="registration-input" type="password" name="password1" placeholder=" パスワード" required>
+                    <span>{{ form.password1 }}</span>
                 </P>
                 <P>
-                    <input class="registration-input" type="password" name="password2" placeholder=" パスワード確認用" required>
+                    <span>{{ form.password2 }}</span>
                 </P>
-
-                <!-- エラーメッセージを表示 -->
-                {% if form.errors %}
-                <div class="error-messages">
-                    {% for field, errors in form.errors.items %}
-                        {% for error in errors %}
-                            <p style="color: red; line-height: 0.1;">{{ error }}</p>
-                        {% endfor %}
-                    {% endfor %}
-                </div>
-                {% endif %}
-
+                 <!-- エラーメッセージを表示 -->
+                 {% if form.errors %}
+                 <div class="error-messages">
+                     {% for field, errors in form.errors.items %}
+                         {% for error in errors %}
+                             <p>{{ error }}</p>
+                         {% endfor %}
+                     {% endfor %}
+                 </div>
+                 {% endif %}
                 <button class="login-back" type="submit">新規登録</button> <!--buttonタグにtype=submitを記載しなくても、標準でついてる　わかりやすさ重視で書いておく-->
             </form>
                 <a href="{% url 'remind:login' %}">ログイン画面へ戻る</a>

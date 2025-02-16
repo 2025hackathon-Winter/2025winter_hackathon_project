@@ -30,3 +30,14 @@
 .login-back{
     margin-bottom: 40px;
 }
+
+.error-messages{
+    text-align: center;
+    color: red;
+    font-size: 12px;
+    margin-bottom: 20px;
+}
+
+.error-messages p{
+   margin: 0;
+}
