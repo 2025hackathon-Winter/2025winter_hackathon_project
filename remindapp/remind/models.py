@@ -24,15 +24,15 @@ class mygoods(models.Model):
         ("その他","その他")
         ]
     
-    id = models.CharField(max_length=255,primary_key=True)
-    uid = models.CharField(max_length=36)
+    id = models.CharField(max_length=255,primary_key=True) #ここはintにしたほうがいいのではないか、それかAutoField
+    uid = models.CharField(max_length=36) #uid = models.ForeignKey(CustomUsers, on_delete=models.CASCADE) という記述にする？
     goods_name = models.CharField(max_length=255)
     category = models.CharField(max_length=255,choices=CATEGORY_CHOICES)
     purchase_date = models.DateTimeField()
     next_purchase_date = models.DateTimeField()
     expire_date = models.DateTimeField()
-    next_purchase_term = models.CharField(max_length=255)
-    first_term = models.CharField(max_length=255)
+    next_purchase_term = models.CharField(max_length=255) # models.IntegerField()  数値のほうが適切いいかも？
+    first_term = models.CharField(max_length=255) # models.IntegerField()  数値のほうが適切いいかも？ 2025/2/16 MANA記述
 
 class UsersManager(BaseUserManager):
     # 普通のユーザー作成
@@ -53,7 +53,13 @@ class UsersManager(BaseUserManager):
 
 # カスタムユーザーモデル
 class CustomUsers(AbstractBaseUser, PermissionsMixin):
-    mailaddress = models.EmailField(unique=True, verbose_name="メールアドレス")  # メールアドレスを必須にする　verbose_name=""→adminの管理画面での表記を変更できる
+    mailaddress = models.EmailField(
+        unique=True, 
+        verbose_name="メールアドレス",
+        error_messages={
+            "unique": "このメールアドレスは既に登録されています。",
+        },
+    )  # メールアドレスを必須にする　verbose_name=""→adminの管理画面での表記を変更できる
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     password = models.CharField(
