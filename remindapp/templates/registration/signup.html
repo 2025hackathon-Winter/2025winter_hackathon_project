@@ -23,6 +23,18 @@
                 <P>
                     <input class="registration-input" type="password" name="password2" placeholder=" パスワード確認用" required>
                 </P>
+
+                <!-- エラーメッセージを表示 -->
+                {% if form.errors %}
+                <div class="error-messages">
+                    {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            <p style="color: red; line-height: 0.1;">{{ error }}</p>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+
                 <button class="login-back" type="submit">新規登録</button> <!--buttonタグにtype=submitを記載しなくても、標準でついてる　わかりやすさ重視で書いておく-->
             </form>
                 <a href="{% url 'remind:login' %}">ログイン画面へ戻る</a>
