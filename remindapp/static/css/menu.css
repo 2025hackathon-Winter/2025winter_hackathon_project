@@ -31,7 +31,7 @@
 
 .tabs{
     padding-bottom: 8px;
-    background-color: var(--pale_gray);
+    /* background-color: var(--pale_gray); */
     width: 348px;
     margin: 0 auto;
     margin-top: 24px;
@@ -100,6 +100,7 @@ input[name="tab-label"] {
 .item{
     display: flex; /* フレックスボックスで横並びに配置 */
     justify-content: space-between; /* 左右に要素を配置 */
+    text-align: left;
     align-items: center; /* 縦方向を中央揃え */
     margin-bottom: 8px; /* 各リストアイテムの間に余白 */
     border-bottom: 1px solid var(--dark_glay); /* 見やすくするための区切り線 */
@@ -107,8 +108,8 @@ input[name="tab-label"] {
 }
 
 .item p{
-    float: left;
-    padding-bottom: 4px;
+    display: inline;
+    text-align: left;
     transition: .2s;
     cursor: pointer;
 }

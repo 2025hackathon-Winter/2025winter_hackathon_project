@@ -21,18 +21,21 @@ class mygoods(models.Model):
     CATEGORY_CHOICES = [
         ("日用品","日用品"),
         ("食料","食料"),
-        ("その他","その他")
+        ("その他","その他"),
         ]
     
     id = models.CharField(max_length=255,primary_key=True) #ここはintにしたほうがいいのではないか、それかAutoField
     uid = models.CharField(max_length=36) #uid = models.ForeignKey(CustomUsers, on_delete=models.CASCADE) という記述にする？
-    goods_name = models.CharField(max_length=255)
-    category = models.CharField(max_length=255,choices=CATEGORY_CHOICES)
-    purchase_date = models.DateTimeField()
-    next_purchase_date = models.DateTimeField()
-    expire_date = models.DateTimeField()
+    goods_name = models.CharField(max_length=255, verbose_name="管理物品名")  #←管理画面で見やすくするために追記　アナザー
+    category = models.CharField(max_length=255,choices=CATEGORY_CHOICES, verbose_name="カテゴリ")
+    purchase_date = models.DateTimeField(verbose_name="購入日")
+    next_purchase_date = models.DateTimeField(verbose_name="次回購入日")
+    expire_date = models.DateTimeField(verbose_name="賞味期限")
     next_purchase_term = models.CharField(max_length=255) # models.IntegerField()  数値のほうが適切いいかも？
     first_term = models.CharField(max_length=255) # models.IntegerField()  数値のほうが適切いいかも？ 2025/2/16 MANA記述
+
+    def __str__(self):
+        return self.goods_name
 
 class UsersManager(BaseUserManager):
     # 普通のユーザー作成
