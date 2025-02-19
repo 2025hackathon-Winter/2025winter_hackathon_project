@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import RemindModel, CustomUsers
+from .models import RemindModel, CustomUsers, defaultgoods, mygoods #アナザー追記defaultgoods, mygoods
 from django.contrib.auth.admin import UserAdmin
 
 class CustomUsersAdmin(UserAdmin):
@@ -20,3 +20,5 @@ class CustomUsersAdmin(UserAdmin):
 admin.site.register(CustomUsers, CustomUsersAdmin)
 # Register your models here.
 admin.site.register(RemindModel)
+admin.site.register(defaultgoods) #アナザー追記defaultgoods, mygoods
+admin.site.register(mygoods) #アナザー追記defaultgoods, mygoods
