@@ -24,15 +24,15 @@ class mygoods(models.Model):
         ("その他","その他"),
         ]
     
-    id = models.CharField(max_length=255,primary_key=True)
-    uid = models.CharField(max_length=36)
+    id = models.CharField(max_length=255,primary_key=True) #ここはintにしたほうがいいのではないか、それかAutoField
+    uid = models.CharField(max_length=36) #uid = models.ForeignKey(CustomUsers, on_delete=models.CASCADE) という記述にする？
     goods_name = models.CharField(max_length=255, verbose_name="管理物品名")  #←管理画面で見やすくするために追記　アナザー
-    category = models.CharField(max_length=255,choices=CATEGORY_CHOICES, verbose_name="カテゴリ") #←管理画面で見やすくするために追記　アナザー
-    purchase_date = models.DateTimeField(verbose_name="購入日") #←管理画面で見やすくするために追記　アナザー
-    next_purchase_date = models.DateTimeField(verbose_name="次回購入日") #←管理画面で見やすくするために追記　アナザー
-    expire_date = models.DateTimeField(verbose_name="賞味期限") #←管理画面で見やすくするために追記　アナザー
-    next_purchase_term = models.CharField(max_length=255)
-    first_term = models.CharField(max_length=255)
+    category = models.CharField(max_length=255,choices=CATEGORY_CHOICES, verbose_name="カテゴリ")
+    purchase_date = models.DateTimeField(verbose_name="購入日")
+    next_purchase_date = models.DateTimeField(verbose_name="次回購入日")
+    expire_date = models.DateTimeField(verbose_name="賞味期限")
+    next_purchase_term = models.CharField(max_length=255) # models.IntegerField()  数値のほうが適切いいかも？
+    first_term = models.CharField(max_length=255) # models.IntegerField()  数値のほうが適切いいかも？ 2025/2/16 MANA記述
 
     def __str__(self):
         return self.goods_name
@@ -56,7 +56,13 @@ class UsersManager(BaseUserManager):
 
 # カスタムユーザーモデル
 class CustomUsers(AbstractBaseUser, PermissionsMixin):
-    mailaddress = models.EmailField(unique=True, verbose_name="メールアドレス")  # メールアドレスを必須にする　verbose_name=""→adminの管理画面での表記を変更できる
+    mailaddress = models.EmailField(
+        unique=True, 
+        verbose_name="メールアドレス",
+        error_messages={
+            "unique": "このメールアドレスは既に登録されています。",
+        },
+    )  # メールアドレスを必須にする　verbose_name=""→adminの管理画面での表記を変更できる
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     password = models.CharField(

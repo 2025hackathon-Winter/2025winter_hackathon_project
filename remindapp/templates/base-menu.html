@@ -18,10 +18,10 @@
     
             <nav class="header-nav nav" id="js-nav">
                 <ul class="nav__items nav-items">
-                    <li class="nav-items__item"><a href="">新規物品登録</a></li>
-                    <li class="nav-items__item"><a href="">設定</a></li>
-                    <li class="nav-items__item"><a href="">ログアウト</a></li>
-                    <li class="nav-items__item"><a href="">お問い合わせ</a></li>
+                    <li class="nav-items__item"><a href="{% url 'remind:myitems-add' %}">新規物品登録</a></li>
+                    <li class="nav-items__item"><a href="{% url 'remind:settings' %}">設定</a></li>
+                    <li class="nav-items__item"><a href="{% url 'remind:logout' %}">ログアウト</a></li>
+                    <li class="nav-items__item"><a href="{% url 'remind:inquiry' %}">お問い合わせ</a></li>
                 </ul>
             </nav>
 
