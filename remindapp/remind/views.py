@@ -7,7 +7,7 @@ from django.contrib.auth.views import LogoutView
 from django.urls import reverse_lazy
 from .models import CustomUsers
 from .forms import CustomUsersCreationForm
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login as auth_login
 from django.shortcuts import redirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import get_user_model
@@ -21,7 +21,7 @@ from django.contrib.auth import get_user_model
 def index(request):    # ブラウザからアクセスがあった時の処理
     return HttpResponse("Hello, world. You're at the polls index.")
 
-# ログイン
+# ログイン機能　2025/2/16 うっちゃん追加 
 User = get_user_model()
 
 class CustomAuthenticationForm(AuthenticationForm):
@@ -39,7 +39,13 @@ class CustomAuthenticationForm(AuthenticationForm):
             user = authenticate(mailaddress=email, password=password)
             if user is None:
                 self.add_error("password", "パスワードが間違っています。")
-        
+            else:
+                # ユーザーが認証された場合のみ、ログインを進める
+                if user.is_active:  # 必要に応じて有効なユーザーか確認
+                    auth_login(self.request, user)
+                else:
+                    self.add_error("username", "このユーザーは無効です。")
+
         return self.cleaned_data
 
 class CustomLoginView(LoginView):
@@ -49,12 +55,20 @@ class CustomLoginView(LoginView):
 class CustomLogoutView(LogoutView):
     next_page = '/login/'
 
-    
+# メニュー画面　2025/2/16 うっちゃん追加
 def menuview(request):
   return render(request,'menu.html') 
 
+# 新規物品登録　2025/2/16 うっちゃん追加
 def MyitemsAdd(request):
   return render(request,'new-item-add.html') 
+
+# 設定画面　2025/2/16 うっちゃん追加
+def Settings(request):
+    return render(request,'setting.html')
+
+def Inquiry(request):
+    return render(request,'inquiry.html')
 
 # サインアップ　2025/2/13 MANA追記
 class UserCreateView(CreateView):
