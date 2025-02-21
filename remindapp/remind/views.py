@@ -6,6 +6,7 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth.views import LogoutView
 from django.urls import reverse_lazy
 from .models import CustomUsers
+from .models import mygoods
 from .forms import CustomUsersCreationForm
 from django.contrib.auth import authenticate, login as auth_login
 from django.shortcuts import redirect
@@ -55,9 +56,21 @@ class CustomLoginView(LoginView):
 class CustomLogoutView(LogoutView):
     next_page = '/login/'
 
+
+   
+
 # メニュー画面　2025/2/16 うっちゃん追加
+ # ↓↓↓↓間違ってれば消してOK仮データ　アナザー　2025/2/19
 def menuview(request):
-  return render(request,'menu.html') 
+    goods_items = mygoods.objects.all()
+    daily_goods = mygoods.objects.filter(category="日用品")  # "日用品"のカテゴリを取得
+    food_goods = mygoods.objects.filter(category="食料")  # "食料"のカテゴリを取得
+    other_goods = mygoods.objects.filter(category="その他")  # "その他"のカテゴリを取得
+    return render(request,'menu.html', {'goods_items':goods_items, 'daily_goods': daily_goods,'food_goods': food_goods,'other_goods': other_goods})
+
+    # ↑↑↑↑間違ってれば消してOK仮データ　アナザー
+    
+    
 
 # 新規物品登録　2025/2/16 うっちゃん追加
 def MyitemsAdd(request):
