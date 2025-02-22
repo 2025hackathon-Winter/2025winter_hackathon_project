@@ -1,0 +1,55 @@
+version: "3.9"
+services:
+  db:
+    container_name: MySQL
+    platform: linux/amd64
+    ports: 
+      - 3306
+    build: 
+      context: .
+      dockerfile: Docker/mysql/Dockerfile
+    #Docker コンテナの管理する領域：ボリューム mysql_data に /var/lib/mysql のデータが保存され、コンテナを削除してもデータが保持される
+    volumes: 
+      - mysql_data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=pass
+      - MYSQL_DATABASE=shopping_remind_app
+      - MYSQL_USER=testuser
+      - MYSQL_PASSWORD=testpass
+    healthcheck:
+    # pingでmysqlにアクセスできるか見ている
+      test: [
+        "CMD-SHELL",
+        "mysqladmin ping -h localhost -u ${MYSQL_USER} -p${MYSQL_PASSWORD} || exit 1",
+        ]
+      # testを実行する間隔を指定
+      interval: 10s
+      # テストコマンドがタイムアウトするまでの時間を指定
+      timeout: 5s
+      # testが失敗した場合に再試行する回数を指定
+      retries: 5
+
+  app:
+    container_name: Django
+    build:
+      context: .
+      dockerfile: Docker/Django/Dockerfile
+    # 現在のdocker-compose.ymlがあるディレクトリ配下の./remindappの中身を/appにマウントします。
+    # ⇒なので、ローカルの変更がそのままコンテナに反映されます。
+    volumes: 
+      - ./remindapp:/app
+      - ./remindapp/static:/app/static
+      -  /var/www/django/static:/var/www/django/static
+      -  /tmp:/tmp
+      -  /var/log/django:/var/log/django
+    ports: 
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+# mysql_data という Docker Volumeを作成 →　他のコンテナで下記Volumeが利用できるようになる。
+volumes:
+    mysql_data:
+      
+
