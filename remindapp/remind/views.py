@@ -6,13 +6,14 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth.views import LogoutView
 from django.urls import reverse_lazy
 from .models import CustomUsers
-from .models import mygoods
-from .forms import CustomUsersCreationForm
+from .models import MyGoods
+from .forms import *
 from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import get_user_model
-
+from django.contrib.auth.decorators import login_required
 
 # def helloworldfunction(reqest):
 #     returnedobject = HttpResponse('<h1>hello world</h1>')
@@ -62,10 +63,10 @@ class CustomLogoutView(LogoutView):
 # メニュー画面　2025/2/16 うっちゃん追加
  # ↓↓↓↓間違ってれば消してOK仮データ　アナザー　2025/2/19
 def menuview(request):
-    goods_items = mygoods.objects.all()
-    daily_goods = mygoods.objects.filter(category="日用品")  # "日用品"のカテゴリを取得
-    food_goods = mygoods.objects.filter(category="食料")  # "食料"のカテゴリを取得
-    other_goods = mygoods.objects.filter(category="その他")  # "その他"のカテゴリを取得
+    goods_items = MyGoods.objects.all()
+    daily_goods = MyGoods.objects.filter(category="日用品")  # "日用品"のカテゴリを取得
+    food_goods = MyGoods.objects.filter(category="食料")  # "食料"のカテゴリを取得
+    other_goods = MyGoods.objects.filter(category="その他")  # "その他"のカテゴリを取得
     return render(request,'menu.html', {'goods_items':goods_items, 'daily_goods': daily_goods,'food_goods': food_goods,'other_goods': other_goods})
 
     # ↑↑↑↑間違ってれば消してOK仮データ　アナザー
@@ -76,9 +77,37 @@ def menuview(request):
 def MyitemsAdd(request):
   return render(request,'new-item-add.html') 
 
+
 # 設定画面　2025/2/16 うっちゃん追加
-def Settings(request):
-    return render(request,'setting.html')
+@login_required
+def settings_page(request):
+    return render(request, 'setting.html')
+
+@login_required
+def update_default_term(request):
+     #return HttpResponse(f"Logged in user: {request.user.mailaddress}")
+    user = request.user # 現在ログインしているユーザーを取得
+
+    user_goods = MyGoods.objects.filter(uid=user.id)
+
+    if request.method == 'POST':
+        defaultform = DefaultTermForm(request.POST, instance=user)
+        if defaultform.is_valid():
+            default_term = defaultform.cleaned_data['default_term']
+            defaultform.save()
+
+            user_goods.update(next_purchase_term=default_term)
+
+            #MyGoods.objects.filter(uid=user.id).update(next_purchase_term=default_term)
+
+            return redirect('remind:menu')
+
+    context = {
+        'user_goods': user_goods
+    }
+
+    return redirect('remind:settings')
+
 
 def Inquiry(request):
     return render(request,'inquiry.html')
