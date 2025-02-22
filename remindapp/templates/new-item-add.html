@@ -19,7 +19,7 @@
         <form action="" method="post"> {% csrf_token %} <!--actionにどこにデータを投げるか指定する。menuはユーザーごとに違う -->
         <div class="add-item-input"> 
             <label for="new">新規物品の入力</label>
-            <input type="text" id="new" placeholder="管理物品名">
+            <input type="text" id="new" name="" placeholder="管理物品名">
         </div>    
         <div>
             <label>期間入力</label>
@@ -28,6 +28,7 @@
                 <span class="count">0</span>
                 <button type="button" id="js-increment">+</button> 
                 <small>週間後</small>
+                <input type="hidden" name="" value="0">
             </div>
            
         </div> 
