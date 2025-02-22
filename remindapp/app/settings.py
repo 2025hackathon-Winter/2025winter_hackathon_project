@@ -127,4 +127,4 @@ LOGIN_REDIRECT_URL = '/menu/'
 LOGOUT_REDIRECT_URL = '/login/'
 LOGIN_URL = '/login/'
 
-AUTH_USER_MODEL = "remind.CustomUsers"  
+AUTH_USER_MODEL = "remind.CustomUsers"

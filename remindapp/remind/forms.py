@@ -1,6 +1,7 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from .models import CustomUsers
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from .models import *
+from django.contrib.auth import authenticate, login
 
 class CustomUsersCreationForm(UserCreationForm):
     class Meta:
@@ -17,3 +18,9 @@ class CustomUsersCreationForm(UserCreationForm):
     password2 = forms.CharField(
         widget=forms.PasswordInput(attrs={'class': 'registration-input', 'placeholder': 'パスワード確認用'})
     )
+
+# 設定画面の期間一括設定フォーム
+class DefaultTermForm(forms.ModelForm):
+    class Meta:
+        model = CustomUsers
+        fields = ('default_term',)

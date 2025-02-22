@@ -16,7 +16,8 @@ urlpatterns = [
     path('logout/',CustomLogoutView.as_view(),name='logout'),
     path('menu/', views.menuview, name='menu'),
     path('myitems/add/', views.MyitemsAdd, name='myitems-add'), # 2025/2/16 うっちゃん追記 新規登録画面
-    path('setting',views.Settings,name='settings'),
+    path('settings/', views.settings_page, name='settings'),
+    path('settings/default_term', views.update_default_term, name='default_term'),
     path('inquiry/',views.Inquiry,name='inquiry'),
     path('', views.index, name='index'), 
     # path('admin/', admin.site.urls),

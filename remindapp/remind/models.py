@@ -13,26 +13,26 @@ class RemindModel(models.Model):
 #     password = models.CharField(max_length=255)
 #     default_term = models.PositiveSmallIntegerField()
 
-class defaultgoods(models.Model):
+class DefaultGoods(models.Model):
     name = models.CharField(max_length=255)
     category = models.CharField(max_length=255)
 
-class mygoods(models.Model):
+class MyGoods(models.Model):
     CATEGORY_CHOICES = [
         ("日用品","日用品"),
         ("食料","食料"),
         ("その他","その他"),
         ]
     
-    id = models.CharField(max_length=255,primary_key=True) #ここはintにしたほうがいいのではないか、それかAutoField
-    uid = models.CharField(max_length=36) #uid = models.ForeignKey(CustomUsers, on_delete=models.CASCADE) という記述にする？
+    id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID') #CharField(max_length=255,primary_key=True)前の記述
+    uid = models.ForeignKey("remind.CustomUsers", on_delete=models.CASCADE) #CharField(max_length=36)前の記述
     goods_name = models.CharField(max_length=255, verbose_name="管理物品名")  #←管理画面で見やすくするために追記　アナザー
     category = models.CharField(max_length=255,choices=CATEGORY_CHOICES, verbose_name="カテゴリ")
     purchase_date = models.DateTimeField(verbose_name="購入日")
     next_purchase_date = models.DateTimeField(verbose_name="次回購入日")
     expire_date = models.DateTimeField(verbose_name="賞味期限")
-    next_purchase_term = models.CharField(max_length=255) # models.IntegerField()  数値のほうが適切いいかも？
-    first_term = models.CharField(max_length=255) # models.IntegerField()  数値のほうが適切いいかも？ 2025/2/16 MANA記述
+    next_purchase_term = models.IntegerField(verbose_name="次回購入までの期間") #CharField(max_length=255）前の記述
+    first_term = models.IntegerField(verbose_name="初期設定期間") #CharField(max_length=255）前の記述
 
     def __str__(self):
         return self.goods_name
