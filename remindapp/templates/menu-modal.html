@@ -1,7 +1,70 @@
 
 
 <!-- モーダル本体 -->
-<div class="modal js-modal">
+<div class="modal js-modal" id="all-modal-{{ goods.id }}">
+    <div class="modal-container">
+      <!-- モーダルを閉じるボタン -->
+      <div class="modal-close js-modal-close">×</div>
+      <!-- モーダル内部のコンテンツ -->
+      <div class="modal-content">
+          <div>
+            <p>{{ goods.goods_name }}</p>
+            <button type="submit">編集</button>
+             <!--ALLのリスト-->
+            <div>
+              <span>購入日:{{ goods.purchase_date|date:"Y/m/d" }}</span><br>
+              <span>賞味期限:{{ goods.expire_date|date:"Y/m/d" }}</span><br>
+              <span>次回購入予定:{{ goods.next_purchase_date|date:"Y/m/d" }}</span><br>
+              <span>次回購入までの期間:{{ good.next_purchase_term }}</span>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal js-modal" id="daily-modal-{{ goods.id }}">
+    <div class="modal-container">
+      <!-- モーダルを閉じるボタン -->
+      <div class="modal-close js-modal-close">×</div>
+      <!-- モーダル内部のコンテンツ -->
+      <div class="modal-content">
+          <div>
+            <p>{{ goods.goods_name }}</p>
+            <button type="submit">編集</button>
+             <!--ALLのリスト-->
+            <div>
+              <span>購入日:{{ goods.purchase_date|date:"Y/m/d" }}</span><br>
+              <span>賞味期限:{{ goods.expire_date|date:"Y/m/d" }}</span><br>
+              <span>次回購入予定:{{ goods.next_purchase_date|date:"Y/m/d" }}</span><br>
+              <span>次回購入までの期間:{{ good.next_purchase_term }}</span>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal js-modal" id="food-modal-{{ goods.id }}">
+    <div class="modal-container">
+      <!-- モーダルを閉じるボタン -->
+      <div class="modal-close js-modal-close">×</div>
+      <!-- モーダル内部のコンテンツ -->
+      <div class="modal-content">
+          <div>
+            <p>{{ goods.goods_name }}</p>
+            <button type="submit">編集</button>
+             <!--ALLのリスト-->
+            <div>
+              <span>購入日:{{ goods.purchase_date|date:"Y/m/d" }}</span><br>
+              <span>賞味期限:{{ goods.expire_date|date:"Y/m/d" }}</span><br>
+              <span>次回購入予定:{{ goods.next_purchase_date|date:"Y/m/d" }}</span><br>
+              <span>次回購入までの期間:{{ good.next_purchase_term }}</span>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal js-modal" id="other-modal-{{ goods.id }}">
     <div class="modal-container">
       <!-- モーダルを閉じるボタン -->
       <div class="modal-close js-modal-close">×</div>

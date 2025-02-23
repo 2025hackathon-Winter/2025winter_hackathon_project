@@ -16,8 +16,11 @@
         <div>
             <div class="list-container">
                 <div>管理物品一覧</div>
-                <button type="button">次回購入期限順</button>
-                <button type="button">最近買った順</button>
+                <button id="sort-next-purchase">次回購入期限順</button>
+                <button id="sort-recent-purchase">最近買った順</button>
+            </div>
+            <div>
+
             </div>
             
             <div class="tabs">
@@ -40,9 +43,9 @@
                      {% for goods in goods_items %}
                     <div class="item">
                         <div>
-                            <p class="js-modal-open">{{ goods.goods_name }}</p><br> <!--ALLのリスト-->
-                            <span>購入日 {{ goods.purchase_date|date:"Y/m/d" }}</span><br>
-                            <span>次回購入予定 {{ goods.next_purchase_date|date:"Y/m/d" }}</span>
+                            <p class="js-modal-open" data-target="all-modal-{{ goods.id }}">{{ goods.goods_name }}</p><br> <!--ALLのリスト-->
+                            <span data-key="purchase_date">購入日 {{ goods.purchase_date|date:"Y/m/d" }}</span><br>
+                            <span data-key="next_purchase_date">次回購入予定 {{ goods.next_purchase_date|date:"Y/m/d" }}</span>
                             {% include 'menu-modal.html' %}
                             </div>
                         <div>
@@ -56,7 +59,7 @@
                     {% for goods in daily_goods %}
                     <div class="item">
                         <div>
-                            <p class="js-modal-open">{{ goods.goods_name }}</p><br> <!--日用品のリスト-->
+                            <p class="js-modal-open" data-target="daily-modal-{{ goods.id }}">{{ goods.goods_name }}</p><br> <!--日用品のリスト-->
                             <span>購入日 {{ goods.purchase_date|date:"Y/m/d" }}</span><br>
                             <span>次回購入予定 {{ goods.next_purchase_date|date:"Y/m/d" }}</span>
                             {% include 'menu-modal.html' %}
@@ -72,7 +75,7 @@
                     {% for goods in food_goods %}
                     <div class="item">
                         <div>
-                            <p class="js-modal-open">{{ goods.goods_name }}</p><br> <!--食品のリスト-->
+                            <p class="js-modal-open" data-target="food-modal-{{ goods.id }}">{{ goods.goods_name }}</p><br> <!--食品のリスト-->
                             <span>購入日 {{ goods.purchase_date|date:"Y/m/d" }}</span><br>
                             <span>次回購入予定 {{ goods.next_purchase_date|date:"Y/m/d" }}</span>
                             {% include 'menu-modal.html' %}
@@ -88,7 +91,7 @@
                    {% for goods in other_goods %}
                     <div class="item">
                         <div>
-                            <p class="js-modal-open">{{ goods.goods_name }}</p><br> <!--食品のリスト-->
+                            <p class="js-modal-open" data-target="other-modal-{{ goods.id }}">{{ goods.goods_name }}</p><br> <!--食品のリスト-->
                             <span>購入日 {{ goods.purchase_date|date:"Y/m/d" }}</span><br>
                             <span>次回購入予定 {{ goods.next_purchase_date|date:"Y/m/d" }}</span>
                             {% include 'menu-modal.html' %}
