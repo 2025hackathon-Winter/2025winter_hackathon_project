@@ -7,10 +7,17 @@
 <body>
     <div class="menu-container">
         <search class="search-container">
-            <form action="./〇〇/{ **** }" method="POST">{% csrf_token %} <!--actionにどこにデータを投げるか指定する。menuはユーザーごとに違う -->
-                <input type="text" placeholder="管理物品の検索">
-                <button type="button">登録</button>    
+            <!-- <form action="./〇〇/{ **** }" method="POST">{% csrf_token %} actionにどこにデータを投げるか指定する。menuはユーザーごとに違う -->
+                <form action="" method="POST">{% csrf_token %}
+                    <!-- <input type="text" placeholder="管理物品の検索"> -->
+                    <input type="text" placeholder="管理物品の検索" name="regist_item"
+                    {% if new_regist_items %} value="{{ new_regist_items.name }}" {% endif %}>
+                <button type="submit">登録</button>    
             </form>
+            <!-- うっちゃん追加 -->
+            {% if error_message %}
+                <p class="error">{{ error_message }}</p>
+            {% endif %}               
         </search>  
     
         <div>
@@ -44,14 +51,28 @@
                     <div class="item">
                         <div>
                             <!-- <p id="purchase-status-{{ goods.id }}" class="purchase-status">〇</p> -->
+                            <p>{{ goods.goods_name }}</p><br> <!-- 2/24 うっちゃん追加 -->
                             <p class="js-modal-open" data-target="all-modal-{{ goods.id }}" data-expire-date="{{ goods.expire_date|date:'Y-m-d' }}">{{ goods.goods_name }}</p><br> <!--ALLのリスト-->
-                            <span data-key="purchase_date">購入日 {{ goods.purchase_date|date:"Y/m/d" }}</span><br>
-                            <span data-key="next_purchase_date">次回購入予定 {{ goods.next_purchase_date|date:"Y/m/d" }}</span>
+                            <!-- 2/24　うっちゃん削除 -->
+                            <!-- <span data-key="purchase_date">購入日 {{ goods.purchase_date|date:"Y/m/d" }}</span><br> -->
+                            <!-- <span data-key="next_purchase_date">次回購入予定 {{ goods.next_purchase_date|date:"Y/m/d" }}</span> -->
+                            <span data-key="purchase_date">購入日: {{ goods.purchase_date }}</span><br>
+                            <span data-key="next_purchase_date">次回購入予定: {{ goods.next_purchase_date }}</span>
                             {% include 'menu-modal.html' %}
                             </div>
                         <div>
-                            <button type="button">買った</button>
-                            <button type="button">延長</button>  
+                            <!-- 2/24　うっちゃん追加 -->                            
+                            <form action="{% url 'remind:bought-item' %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="item_id" value="{{ goods.id }}">
+                                <button type="submit">買った</button>
+                            </form>
+                        
+                            <form action="{% url 'remind:extend-item' %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="item_id" value="{{ goods.id }}">
+                                <button type="submit">延長</button>
+                            </form> 
                         </div>      
                     </div>
                     {% endfor %}
@@ -66,8 +87,18 @@
                             {% include 'menu-modal.html' %}
                             </div>
                         <div>
-                            <button type="button">買った</button>
-                            <button type="button">延長</button>  
+                            <!-- 2/24　うっちゃん追加 -->                            
+                            <form action="{% url 'remind:bought-item' %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="item_id" value="{{ goods.id }}">
+                                <button type="submit">買った</button>
+                            </form>
+                        
+                            <form action="{% url 'remind:extend-item' %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="item_id" value="{{ goods.id }}">
+                                <button type="submit">延長</button>
+                            </form> 
                         </div>      
                     </div>
                     {% endfor %}
@@ -82,8 +113,18 @@
                             {% include 'menu-modal.html' %}
                             </div>
                         <div>
-                            <button type="button">買った</button>
-                            <button type="button">延長</button>  
+                            <!-- 2/24　うっちゃん追加 -->                            
+                            <form action="{% url 'remind:bought-item' %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="item_id" value="{{ goods.id }}">
+                                <button type="submit">買った</button>
+                            </form>
+                        
+                            <form action="{% url 'remind:extend-item' %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="item_id" value="{{ goods.id }}">
+                                <button type="submit">延長</button>
+                            </form>
                         </div>      
                     </div>
                     {% endfor %}
@@ -98,8 +139,18 @@
                             {% include 'menu-modal.html' %}
                             </div>
                         <div>
-                            <button type="button">買った</button>
-                            <button type="button">延長</button>  
+                            <!-- 2/24　うっちゃん追加 -->                            
+                            <form action="{% url 'remind:bought-item' %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="item_id" value="{{ goods.id }}">
+                                <button type="submit">買った</button>
+                            </form>
+                        
+                            <form action="{% url 'remind:extend-item' %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="item_id" value="{{ goods.id }}">
+                                <button type="submit">延長</button>
+                            </form>
                         </div>      
                     </div>
                     {% endfor %}

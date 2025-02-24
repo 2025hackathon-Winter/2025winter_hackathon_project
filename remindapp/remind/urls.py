@@ -1,9 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 # from .views import HelloWorldClass
-from .views import CustomLoginView, UserCreateView
-from .views import CustomLogoutView
-from .views import menuview
+from .views import CustomLoginView, UserCreateView,CustomLogoutView,MenuView,MyitemsAdd,BoughtItem,ExtendItem
 from . import views # 2025/1/31　うっちゃん追加
 from django.contrib.auth import views as auth_views # 2025/1/31　うっちゃん追加
 
@@ -14,13 +12,13 @@ urlpatterns = [
     path("signup/", UserCreateView.as_view(), name='signup'), # 2025/2/13 MANA追記
     path('login/', CustomLoginView.as_view(), name='login'),
     path('logout/',CustomLogoutView.as_view(),name='logout'),
-    path('menu/', views.menuview, name='menu'),
-    path('myitems/add/', views.MyitemsAdd, name='myitems-add'), # 2025/2/16 うっちゃん追記 新規登録画面
+    # path('menu/', views.MenuView, name='menu'),
+    path('menu/', MenuView.as_view(), name='menu'),
+    path('myitems/add/', MyitemsAdd.as_view(), name='myitems-add'), # 2025/2/16 うっちゃん追記 新規登録画面
     path('settings/', views.settings_page, name='settings'),
     path('settings/default_term', views.update_default_term, name='default_term'),
     path('inquiry/',views.Inquiry,name='inquiry'),
     path('editmodal/', views.editmodal, name='editmodal'),
-    path('', views.index, name='index'), 
-    # path('admin/', admin.site.urls),
-    # path('hello/', HelloWorldClass.as_view())
+    path('bought-item/', BoughtItem.as_view(), name='bought-item'), 
+    path('extend-item/', ExtendItem.as_view(), name='extend-item')    
 ]
