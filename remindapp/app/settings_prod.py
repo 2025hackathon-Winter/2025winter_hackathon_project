@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from datetime import datetime
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,6 +33,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'remind.middleware.LoggingMiddleware'
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -92,7 +94,87 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+today = datetime.today().strftime('%Y-%m-%d')
 
+LOGGING = {
+    # ロギング設定のバージョン
+    "version": 1,
+    #　Django のデフォルトログ（既存のロガー）を無効にするか
+    "disable_existing_loggers": False,
+    #　ログの出力フォーマットを指定
+    # {levelname}:ログのレベル（DEBUG, INFO, WARNING, ERROR, CRITICAL）
+    # {asctime}:ログが記録された時間
+    # {module}:ログを出力したモジュール名
+    # {message}:実際のログメッセージ
+    # ↓の書き方での実際の出力　[INFO] 2025-02-23 14:30:00 views サーバーが起動しました
+    # styleはこのformatの書き方のスタイルを指定している。
+    # verboseは詳細のログ、simpleはシンプルなログ
+    "formatters": {
+        "verbose": {
+            "format": "[{levelname}] {asctime} {module} {message}",
+            "style": "{",
+        },
+        "simple": {
+            "format": "[{levelname}] {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "file": {
+            "level": "WARNING",  # WARNING 以上のログを記録
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "filename": f"/var/log/django/app_logs/django_{today}.log",
+            "when": "midnight",  # 毎日0時にログをローテーション
+            "interval": 1,
+            "backupCount": 7,  # 7日分のログを保持
+            "formatter": "verbose",
+        },
+        "console": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+            "formatter": "simple",
+        },
+
+    },
+    # propagete:親のロガーに伝わるか？伝える＝True
+    "loggers": {
+        "django": {
+            "handlers": ["file", "console"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "django.request": {
+            "handlers": ["file"],
+            "level": "WARNING",
+            "propagate": False,
+        },
+        "django.server": {
+            "handlers": ["file"],
+            "level": "WARNING",
+            "propagate": False,
+        },
+        "django.template": {
+            "handlers": ["file"],
+            "level": "WARNING",
+            "propagate": False,
+        },
+        "django.db.backends": {
+            "handlers": ["file"],
+            "level": "WARNING" ,
+            "propagate": False,
+        },
+        "django.security": {
+            "handlers": ["file"],
+            "level": "WARNING" ,
+            "propagate": False,
+        },
+        "remind": {  # カスタムアプリのログ
+            "handlers": ["file","console"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+    },
+}
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
