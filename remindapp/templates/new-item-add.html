@@ -19,7 +19,8 @@
         <form action="" method="post"> {% csrf_token %} <!--actionにどこにデータを投げるか指定する。menuはユーザーごとに違う -->
         <div class="add-item-input"> 
             <label for="new">新規物品の入力</label>
-            <input type="text" id="new" name="" placeholder="管理物品名">
+            <input type="text" id="new" name="item_name" placeholder="管理物品名">
+            <!-- 2/24 うっちゃん追加 -->
         </div>    
         <div>
             <label>期間入力</label>
