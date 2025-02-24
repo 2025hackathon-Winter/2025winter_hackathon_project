@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.core.validators import MinLengthValidator
+import uuid
 
 # Create your models here.
 class RemindModel(models.Model):
@@ -12,30 +13,6 @@ class RemindModel(models.Model):
 #     mailaddress =models.EmailField(max_length=255)
 #     password = models.CharField(max_length=255)
 #     default_term = models.PositiveSmallIntegerField()
-
-class DefaultGoods(models.Model):
-    name = models.CharField(max_length=255)
-    category = models.CharField(max_length=255)
-
-class MyGoods(models.Model):
-    CATEGORY_CHOICES = [
-        ("日用品","日用品"),
-        ("食料","食料"),
-        ("その他","その他"),
-        ]
-    
-    id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID') #CharField(max_length=255,primary_key=True)前の記述
-    uid = models.ForeignKey("remind.CustomUsers", on_delete=models.CASCADE) #CharField(max_length=36)前の記述
-    goods_name = models.CharField(max_length=255, verbose_name="管理物品名")  #←管理画面で見やすくするために追記　アナザー
-    category = models.CharField(max_length=255,choices=CATEGORY_CHOICES, verbose_name="カテゴリ")
-    purchase_date = models.DateTimeField(verbose_name="購入日")
-    next_purchase_date = models.DateTimeField(verbose_name="次回購入日")
-    expire_date = models.DateTimeField(verbose_name="賞味期限")
-    next_purchase_term = models.IntegerField(verbose_name="次回購入までの期間") #CharField(max_length=255）前の記述
-    first_term = models.IntegerField(verbose_name="初期設定期間") #CharField(max_length=255）前の記述
-
-    def __str__(self):
-        return self.goods_name
 
 class UsersManager(BaseUserManager):
     # 普通のユーザー作成
@@ -56,6 +33,7 @@ class UsersManager(BaseUserManager):
 
 # カスタムユーザーモデル
 class CustomUsers(AbstractBaseUser, PermissionsMixin):
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     mailaddress = models.EmailField(
         unique=True, 
         verbose_name="メールアドレス",
@@ -90,3 +68,33 @@ class CustomUsers(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.mailaddress
+    
+class DefaultGoods(models.Model):
+    CATEGORY_CHOICES = [
+        ("1","日用品"),
+        ("2","食品"),
+        ("3", "その他"),
+        ]
+    id = models.SmallAutoField(primary_key=True) # 2025/2/22 うっちゃん追加
+    name = models.CharField(max_length=255, verbose_name="物品名")
+    category = models.CharField(max_length=1, choices=CATEGORY_CHOICES, verbose_name="カテゴリ名")
+    default_term = models.SmallIntegerField(default=0, verbose_name="通知期間") # 2025/2/22 うっちゃん追加
+    is_default = models.BooleanField(default=False, verbose_name="デフォルト物品フラグ") # 2025/2/22 うっちゃん追加
+
+    def __str__(self):
+        return self.name
+
+class MyGoods(models.Model):
+    id=models.SmallAutoField(primary_key=True) # 2025/2/22 うっちゃん追加
+    uid=models.ForeignKey(CustomUsers, on_delete=models. CASCADE) # 2025/2/22 うっちゃん追加
+    goods=models.ForeignKey (DefaultGoods,on_delete=models.CASCADE)
+    goods_name=models.CharField(max_length=255, verbose_name="管理物品名") #←管理画面で見やすくするために追記 アナザー
+    category=models.CharField(max_length=255, verbose_name="カテゴリ")
+    purchase_date=models.DateField(verbose_name="購入日")
+    next_purchase_date=models.DateField(verbose_name="次回購入日")
+    expire_date=models.DateField(blank=True, null=True, verbose_name="賞味期限")
+    next_purchase_term=models.SmallIntegerField(verbose_name="次回購入期間") 
+    first_term=models.SmallIntegerField(verbose_name="初回期間")#2025/2/16 ΜΑNA記述
+
+    def __str__(self):
+        return self.goods_name
