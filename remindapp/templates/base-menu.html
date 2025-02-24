@@ -7,7 +7,10 @@
     <meta name="description" content="ご自宅にある日用品や食品の在庫管理が簡単にできるWEBアプリです。">
     <meta property="og:sote_name" content="Wasurenu"> <!--共有時のサイト名をするタグ -->
     <meta property="og:site_name" content="Wasurenu"> <!--サイト名を指定するタグ-->
-
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="icon" href=""> <!--ファビコンのURL-->
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
@@ -37,4 +40,8 @@
     <script src="{% static 'javascript/hamburger.js' %}"></script>
     <script src="{% static 'javascript/menu-sort.js' %}"></script>
     <script src="{% static 'javascript/modal.js' %}"></script>
+    <script src="{% static 'javascript/date-edit-modal.js' %}"></script>
+    <script src="{% static 'javascript/expire-date.js' %}"></script>
+    <script src="{% static 'javascript/status.js' %}"></script>
+    <script src="{% static 'javascript/tab-background.js' %}"></script>
 </html>

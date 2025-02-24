@@ -123,3 +123,10 @@ input[name="tab-label"] {
     font-size: 12px;
     padding-left: 24px;
 }
+
+
+/* 賞味期限切れた際の文字変更 */
+.expired {
+        color: red;
+        font-family: "Hachi Maru Pop";
+}

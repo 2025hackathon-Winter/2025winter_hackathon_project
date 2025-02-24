@@ -17,6 +17,8 @@ header {
   background-color: var(--dark_bule);
   color: var(--white);
   z-index: 999;
+  position: sticky;
+  top: 0;
 }
 
 /* 全てのボタンのベース*/

@@ -70,7 +70,7 @@
     margin-bottom: 12px;
   }
 
-  .modal-content span{
+  .modal-content span,label{
     font-size: 16px;
   }
 
