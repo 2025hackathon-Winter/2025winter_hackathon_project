@@ -14,6 +14,8 @@ from django.shortcuts import redirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+import datetime
+from django.shortcuts import get_object_or_404
 
 # def helloworldfunction(reqest):
 #     returnedobject = HttpResponse('<h1>hello world</h1>')
@@ -63,10 +65,10 @@ class CustomLogoutView(LogoutView):
 # メニュー画面　2025/2/16 うっちゃん追加
  # ↓↓↓↓間違ってれば消してOK仮データ　アナザー　2025/2/19
 def menuview(request):
-    goods_items = MyGoods.objects.all()
-    daily_goods = MyGoods.objects.filter(category="日用品")  # "日用品"のカテゴリを取得
-    food_goods = MyGoods.objects.filter(category="食料")  # "食料"のカテゴリを取得
-    other_goods = MyGoods.objects.filter(category="その他")  # "その他"のカテゴリを取得
+    goods_items = MyGoods.objects.filter(uid=request.user)
+    daily_goods = MyGoods.objects.filter(category="日用品", uid=request.user)  # "日用品"のカテゴリを取得
+    food_goods = MyGoods.objects.filter(category="食料", uid=request.user)  # "食料"のカテゴリを取得
+    other_goods = MyGoods.objects.filter(category="その他", uid=request.user)  # "その他"のカテゴリを取得
     return render(request,'menu.html', {'goods_items':goods_items, 'daily_goods': daily_goods,'food_goods': food_goods,'other_goods': other_goods})
 
     # ↑↑↑↑間違ってれば消してOK仮データ　アナザー
@@ -111,6 +113,27 @@ def update_default_term(request):
 
 def Inquiry(request):
     return render(request,'inquiry.html')
+
+# モーダル編集    
+def editmodal(request):
+    if request.method == 'POST':
+        goods_id = request.POST.get('goods_id')
+        goods_instance = get_object_or_404(MyGoods, id=goods_id, uid=request.user)
+
+        form = ModalForm(request.POST, instance=goods_instance)
+        if form.is_valid():
+            goods = form.save(commit=False)
+
+            new_purchase_date = form.cleaned_data['purchase_date']
+            new_next_purchase_term = form.cleaned_data['next_purchase_term']
+
+            goods.next_purchase_date = new_purchase_date + datetime.timedelta(weeks=new_next_purchase_term)
+
+            goods.save()
+            return redirect('remind:menu')
+
+    return redirect('remind:menu')
+
 
 # サインアップ　2025/2/13 MANA追記
 class UserCreateView(CreateView):

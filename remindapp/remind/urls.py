@@ -19,6 +19,7 @@ urlpatterns = [
     path('settings/', views.settings_page, name='settings'),
     path('settings/default_term', views.update_default_term, name='default_term'),
     path('inquiry/',views.Inquiry,name='inquiry'),
+    path('editmodal/', views.editmodal, name='editmodal'),
     path('', views.index, name='index'), 
     # path('admin/', admin.site.urls),
     # path('hello/', HelloWorldClass.as_view())

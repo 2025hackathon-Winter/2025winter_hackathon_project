@@ -24,3 +24,8 @@ class DefaultTermForm(forms.ModelForm):
     class Meta:
         model = CustomUsers
         fields = ('default_term',)
+
+class ModalForm(forms.ModelForm):
+    class Meta:
+        model = MyGoods
+        fields = ('purchase_date', 'expire_date', 'next_purchase_term')

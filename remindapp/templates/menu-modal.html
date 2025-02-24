@@ -10,107 +10,128 @@
           <div>
             <p>{{ goods.goods_name }}</p>
             <button type="button" class="edit-button">編集</button>
-            <button type="button" class="save-button" style="display: none;">保存</button>
+            
              <!--ALLのリスト-->
             <div class="display-mode">
               <span class="purchase-date">購入日:{{ goods.purchase_date|date:"Y/m/d" }}</span><br>
               <span class="expire-date">賞味期限:{{ goods.expire_date|date:"Y/m/d" }}</span><br>
               <span class="next-purchase-date">次回購入予定:{{ goods.next_purchase_date|date:"Y/m/d" }}</span><br>
-              <span class="next-purchase-term">次回購入までの期間:{{ goods.next_purchase_term }}</span>
+              <span class="next-purchase-term">次回購入までの期間:{{ goods.next_purchase_term }}週間</span>
             </div>
             <!-- 編集モード -->
-            <div class="edit-mode" style="display: none;">
-              <span>購入日: <input type="date" class="input-purchase-date" value="{{ goods.purchase_date|date:'Y-m-d' }}"></span><br>
-              <span>賞味期限: <input type="date" class="input-expire-date" value="{{ goods.expire_date|date:'Y-m-d' }}"></span><br>
-              <span>次回購入予定: <input type="date" class="input-next-purchase-date" value="{{ goods.next_purchase_date|date:'Y-m-d' }}"></span><br>
-              <span>次回購入までの期間: <input type="text" style="width: 40px" class="input-next-purchase-term" value="{{ goods.next_purchase_term }}"></span>
+            <form method= "POST" action="{% url 'remind:editmodal' %}">
+              {% csrf_token %}
+              <input type="hidden" name="goods_id" value="{{ goods.id }}">
+              <div class="edit-mode" style="display: none;">
+                <button type="submit" class="save-button" style="display: none;">保存</button> <!-- 動かしました：MANA追記 -->
+                <span>購入日: <input type="date" class="input-purchase-date" name="purchase_date" value="{{ goods.purchase_date|date:'Y-m-d' }}"></span><br>
+                <span>賞味期限: <input type="date" class="input-expire-date" name="expire_date" value="{{ goods.expire_date|date:'Y-m-d' }}"></span><br>
+                <span class="input-next-purchase-date">次回購入予定:{{ goods.next_purchase_date|date:'Y-m-d' }}</span><br>
+                <span>次回購入までの期間: <input type="text" style="width: 40px" class="input-next-purchase-term" name="next_purchase_term" value="{{ goods.next_purchase_term }}">週間</span>
+            </form>
+
           </div>
           </div>
       </div>
     </div>
   </div>
 
-  <div class="modal js-modal" id="daily-modal-{{ goods.id }}">
+  <div class="modal js-modal" id="daily-modal-{{ d_goods.id }}">
     <div class="modal-container">
       <!-- モーダルを閉じるボタン -->
       <div class="modal-close js-modal-close">×</div>
       <!-- モーダル内部のコンテンツ -->
       <div class="modal-content">
           <div>
-            <p>{{ goods.goods_name }}</p>
+            <p>{{ d_goods.goods_name }}</p>
             <button type="button" class="edit-button">編集</button>
-            <button type="button" class="save-button" style="display: none;">保存</button>
-             <!--ALLのリスト-->
+             <!--日用品のリスト-->
             <div class="display-mode">
-              <span class="purchase-date">購入日:{{ goods.purchase_date|date:"Y/m/d" }}</span><br>
-              <span class="expire-date">賞味期限:{{ goods.expire_date|date:"Y/m/d" }}</span><br>
-              <span class="next-purchase-date">次回購入予定:{{ goods.next_purchase_date|date:"Y/m/d" }}</span><br>
-              <span class="next-purchase-term">次回購入までの期間:{{ goods.next_purchase_term }}</span>
+              <span class="purchase-date">購入日:{{ d_goods.purchase_date|date:"Y/m/d" }}</span><br>
+              <span class="expire-date">賞味期限:{{ d_goods.expire_date|date:"Y/m/d" }}</span><br>
+              <span class="next-purchase-date">次回購入予定:{{ d_goods.next_purchase_date|date:"Y/m/d" }}</span><br>
+              <span class="next-purchase-term">次回購入までの期間:{{ d_goods.next_purchase_term }}</span>
             </div>
             <!-- 編集モード -->
-            <div class="edit-mode" style="display: none;"> <!--編集ボタンを押すまで非表示にしておく-->
-              <span>購入日: <input type="date" class="input-purchase-date" value="{{ goods.purchase_date|date:'Y-m-d' }}"></span><br>
-              <span>賞味期限: <input type="date" class="input-expire-date" value="{{ goods.expire_date|date:'Y-m-d' }}"></span><br>
-              <span>次回購入予定: <input type="date" class="input-next-purchase-date" value="{{ goods.next_purchase_date|date:'Y-m-d' }}"></span><br>
-              <span>次回購入までの期間: <input type="text" style="width: 40px" class="input-next-purchase-term" value="{{ goods.next_purchase_term }}"></span>
+            <form method= "POST" action="{% url 'remind:editmodal' %}">
+              {% csrf_token %}
+              <input type="hidden" name="goods_id" value="{{ d_goods.id }}">
+              <div class="edit-mode" style="display: none;"> <!--編集ボタンを押すまで非表示にしておく-->
+                <button type="submit" class="save-button" style="display: none;">保存</button>
+                <span>購入日: <input type="date" class="input-purchase-date" name="purchase_date" value="{{ d_goods.purchase_date|date:'Y-m-d' }}"></span><br>
+                <span>賞味期限: <input type="date" class="input-expire-date" name="expire_date" value="{{ d_goods.expire_date|date:'Y-m-d' }}"></span><br>
+                <span class="input-next-purchase-date">次回購入予定:{{ d_goods.next_purchase_date|date:'Y-m-d' }}</span><br>
+                <span>次回購入までの期間: <input type="text" style="width: 40px" class="input-next-purchase-term" name="next_purchase_term" value="{{ d_goods.next_purchase_term }}"></span>
+            </form>
+            
           </div>
           </div>
       </div>
     </div>
   </div>
 
-  <div class="modal js-modal" id="food-modal-{{ goods.id }}">
+  <div class="modal js-modal" id="food-modal-{{ f_goods.id }}">
     <div class="modal-container">
       <!-- モーダルを閉じるボタン -->
       <div class="modal-close js-modal-close">×</div>
       <!-- モーダル内部のコンテンツ -->
       <div class="modal-content">
           <div>
-            <p>{{ goods.goods_name }}</p>
+            <p>{{ f_goods.goods_name }}</p>
             <button type="button" class="edit-button">編集</button>
-            <button type="button" class="save-button" style="display: none;">保存</button>
-             <!--ALLのリスト-->
+             <!--食品のリスト-->
             <div class="display-mode">
-              <span class="purchase-date">購入日:{{ goods.purchase_date|date:"Y/m/d" }}</span><br>
-              <span class="expire-date">賞味期限:{{ goods.expire_date|date:"Y/m/d" }}</span><br>
-              <span class="next-purchase-date">次回購入予定:{{ goods.next_purchase_date|date:"Y/m/d" }}</span><br>
-              <span class="next-purchase-term">次回購入までの期間:{{ goods.next_purchase_term }}</span>
+              <span class="purchase-date">購入日:{{ f_goods.purchase_date|date:"Y/m/d" }}</span><br>
+              <span class="expire-date">賞味期限:{{ f_goods.expire_date|date:"Y/m/d" }}</span><br>
+              <span class="next-purchase-date">次回購入予定:{{ f_goods.next_purchase_date|date:"Y/m/d" }}</span><br>
+              <span class="next-purchase-term">次回購入までの期間:{{ f_goods.next_purchase_term }}</span>
             </div>
             <!-- 編集モード -->
-            <div class="edit-mode" style="display: none;">
-              <span>購入日: <input type="date" class="input-purchase-date" value="{{ goods.purchase_date|date:'Y-m-d' }}"></span><br>
-              <span>賞味期限: <input type="date" class="input-expire-date" value="{{ goods.expire_date|date:'Y-m-d' }}"></span><br>
-              <span>次回購入予定: <input type="date" class="input-next-purchase-date" value="{{ goods.next_purchase_date|date:'Y-m-d' }}"></span><br>
-              <span>次回購入までの期間: <input type="text" style="width: 40px" class="input-next-purchase-term" value="{{ goods.next_purchase_term }}"></span>
+            <form method= "POST" action="{% url 'remind:editmodal' %}">
+              {% csrf_token %}
+              <input type="hidden" name="goods_id" value="{{ f_goods.id }}">
+              <div class="edit-mode" style="display: none;">
+                <button type="submit" class="save-button" style="display: none;">保存</button>
+                <span>購入日: <input type="date" class="input-purchase-date" name="purchase_date" value="{{ f_goods.purchase_date|date:'Y-m-d' }}"></span><br>
+                <span>賞味期限: <input type="date" class="input-expire-date" name="expire_date" value="{{ f_goods.expire_date|date:'Y-m-d' }}"></span><br>
+                <span class="input-next-purchase-date">次回購入予定:{{ f_goods.next_purchase_date|date:'Y-m-d' }}</span><br>
+                <span>次回購入までの期間: <input type="text" style="width: 40px" class="input-next-purchase-term" name="next_purchase_term" value="{{ f_goods.next_purchase_term }}"></span>
+              </form>
+
           </div>
           </div>
       </div>
     </div>
   </div>
 
-  <div class="modal js-modal" id="other-modal-{{ goods.id }}">
+  <div class="modal js-modal" id="other-modal-{{ o_goods.id }}">
     <div class="modal-container">
       <!-- モーダルを閉じるボタン -->
       <div class="modal-close js-modal-close">×</div>
       <!-- モーダル内部のコンテンツ -->
       <div class="modal-content">
           <div>
-            <p>{{ goods.goods_name }}</p>
+            <p>{{ o_goods.goods_name }}</p>
             <button type="button" class="edit-button">編集</button>
-            <button type="button" class="save-button" style="display: none;">保存</button>
-             <!--ALLのリスト-->
+             <!--その他のリスト-->
             <div class="display-mode">
-              <span class="purchase-date">購入日:{{ goods.purchase_date|date:"Y/m/d" }}</span><br>
-              <span class="expire-date">賞味期限:{{ goods.expire_date|date:"Y/m/d" }}</span><br>
-              <span class="next-purchase-date">次回購入予定:{{ goods.next_purchase_date|date:"Y/m/d" }}</span><br>
-              <span class="next-purchase-term">次回購入までの期間:{{ goods.next_purchase_term }}</span>
+              <span class="purchase-date">購入日:{{ o_goods.purchase_date|date:"Y/m/d" }}</span><br>
+              <span class="expire-date">賞味期限:{{ o_goods.expire_date|date:"Y/m/d" }}</span><br>
+              <span class="next-purchase-date">次回購入予定:{{ o_goods.next_purchase_date|date:"Y/m/d" }}</span><br>
+              <span class="next-purchase-term">次回購入までの期間:{{ o_goods.next_purchase_term }}</span>
             </div>
             <!-- 編集モード -->
-            <div class="edit-mode" style="display: none;">
-              <span>購入日: <input type="date" class="input-purchase-date" value="{{ goods.purchase_date|date:'Y-m-d' }}"></span><br>
-              <span>賞味期限: <input type="date" class="input-expire-date" value="{{ goods.expire_date|date:'Y-m-d' }}"></span><br>
-              <span>次回購入予定: <input type="date" class="input-next-purchase-date" value="{{ goods.next_purchase_date|date:'Y-m-d' }}"></span><br>
-              <span>次回購入までの期間: <input type="text" style="width: 40px" class="input-next-purchase-term" value="{{ goods.next_purchase_term }}"></span>
+            <form method= "POST" action="{% url 'remind:editmodal' %}">
+              {% csrf_token %}
+              <input type="hidden" name="goods_id" value="{{ o_goods.id }}">
+              <div class="edit-mode" style="display: none;">
+                <button type="submit" class="save-button" style="display: none;">保存</button>
+                <span>購入日: <input type="date" class="input-purchase-date" name="purchase_date" value="{{ o_goods.purchase_date|date:'Y-m-d' }}"></span><br>
+                <span>賞味期限: <input type="date" class="input-expire-date" name="expire_date" value="{{ o_goods.expire_date|date:'Y-m-d' }}"></span><br>
+                <span class="input-next-purchase-date">次回購入予定:{{ o_goods.next_purchase_date|date:'Y-m-d' }}</span><br>
+                <span>次回購入までの期間: <input type="text" style="width: 40px" class="input-next-purchase-term" name="next_purchase_term" value="{{ o_goods.next_purchase_term }}"></span>
+            </form>
+
           </div>
           </div>
       </div>
