@@ -60,8 +60,6 @@ class CustomLogoutView(LogoutView):
     next_page = '/login/'
 
 
-
-# メニュー画面　2025/2/16 うっちゃん追加
 class MenuView(View):
     def get(self, request):
         user = CustomUsers.objects.get(mailaddress=request.user.mailaddress)
@@ -243,6 +241,27 @@ def update_default_term(request):
 
 def Inquiry(request):
     return render(request,'inquiry.html')
+
+# モーダル編集    
+def editmodal(request):
+    if request.method == 'POST':
+        goods_id = request.POST.get('goods_id')
+        goods_instance = get_object_or_404(MyGoods, id=goods_id, uid=request.user)
+
+        form = ModalForm(request.POST, instance=goods_instance)
+        if form.is_valid():
+            goods = form.save(commit=False)
+
+            new_purchase_date = form.cleaned_data['purchase_date']
+            new_next_purchase_term = form.cleaned_data['next_purchase_term']
+
+            goods.next_purchase_date = new_purchase_date + datetime.timedelta(weeks=new_next_purchase_term)
+
+            goods.save()
+            return redirect('remind:menu')
+
+    return redirect('remind:menu')
+
 
 # サインアップ　2025/2/13 MANA追記
 class UserCreateView(CreateView):

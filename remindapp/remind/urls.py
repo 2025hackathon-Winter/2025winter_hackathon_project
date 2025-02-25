@@ -18,6 +18,7 @@ urlpatterns = [
     path('settings/', views.settings_page, name='settings'),
     path('settings/default_term', views.update_default_term, name='default_term'),
     path('inquiry/',views.Inquiry,name='inquiry'),
+    path('editmodal/', views.editmodal, name='editmodal'),
     path('bought-item/', BoughtItem.as_view(), name='bought-item'), 
     path('extend-item/', ExtendItem.as_view(), name='extend-item')    
 ]
