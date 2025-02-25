@@ -69,7 +69,7 @@ class CustomUsers(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.mailaddress
     
-class DefaultGoods(models.Model):
+class RegistGoods(models.Model):
     CATEGORY_CHOICES = [
         ("1","日用品"),
         ("2","食品"),
@@ -87,7 +87,7 @@ class DefaultGoods(models.Model):
 class MyGoods(models.Model):
     id=models.SmallAutoField(primary_key=True) # 2025/2/22 うっちゃん追加
     uid=models.ForeignKey(CustomUsers, on_delete=models. CASCADE) # 2025/2/22 うっちゃん追加
-    goods=models.ForeignKey (DefaultGoods,on_delete=models.CASCADE)
+    goods=models.ForeignKey (RegistGoods,on_delete=models.CASCADE)
     goods_name=models.CharField(max_length=255, verbose_name="管理物品名") #←管理画面で見やすくするために追記 アナザー
     category=models.CharField(max_length=255, verbose_name="カテゴリ")
     purchase_date=models.DateField(verbose_name="購入日")

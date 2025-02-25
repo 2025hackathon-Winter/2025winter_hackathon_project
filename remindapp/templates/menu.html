@@ -21,29 +21,51 @@
         </search>  
     
         <div>
-            <form action="" method="GET" class="list-container">
+            <!-- <form action="" method="GET" class="list-container"> -->
+            <div class="list-container">
                 <div>管理物品一覧</div>
-                <button type="submit" id="sort-next-purchase" name="sort" 
+                <!-- <button type="submit" id="sort-next-purchase" name="sort" 
                 value="sort-next-purchase{{ sort_symbols.sort_next_purchase.0 }}">次回購入日順{{ sort_symbols.sort_next_purchase.1 }}</button>
                 <button type="submit" id="sort-recent-purchase" name="sort" 
-                value="sort-recent-purchase{{ sort_symbols.sort_recent_purchase.0 }}">最近買った順{{ sort_symbols.sort_recent_purchase.1 }}</button>
-            </form>
+                value="sort-recent-purchase{{ sort_symbols.sort_recent_purchase.0 }}">最近買った順{{ sort_symbols.sort_recent_purchase.1 }}</button> -->
+                <button id="sort-next-purchase">次回購入期限順</button>
+                <button id="sort-recent-purchase">最近買った順</button>
+            </div>
+            <!-- </form> -->
             <div>
 
             </div>
             
             <div class="tabs">
             
+                {% if not tab_label %}
                 <input type="radio" id="all" name="tab-label" checked>
+                {% elif tab_label == "all" %}
+                <input type="radio" id="all" name="tab-label" checked>
+                {% else %}
+                <input type="radio" id="all" name="tab-label">
+                {% endif %}
                 <label class="tab-label" for="all">ALL</label>
             
+                {% if tab_label == "daily-item" %}
+                <input type="radio" id="daily-item" name="tab-label" checked>
+                {% else %}
                 <input type="radio" id="daily-item" name="tab-label">
+                {% endif %}
                 <label class="tab-label" for="daily-item">日用品</label>
             
+                {% if tab_label == "food" %}
+                <input type="radio" id="food" name="tab-label" checked>
+                {% else %}
                 <input type="radio" id="food" name="tab-label">
+                {% endif %}
                 <label class="tab-label" for="food">食品</label>
             
+                {% if tab_label == "others" %}
+                <input type="radio" id="others" name="tab-label" checked>
+                {% else %}
                 <input type="radio" id="others" name="tab-label">
+                {% endif %}
                 <label class="tab-label" for="others">その他</label>
         
                 
@@ -58,8 +80,8 @@
                             <!-- 2/24　うっちゃん削除 -->
                             <!-- <span data-key="purchase_date">購入日 {{ goods.purchase_date|date:"Y/m/d" }}</span><br> -->
                             <!-- <span data-key="next_purchase_date">次回購入予定 {{ goods.next_purchase_date|date:"Y/m/d" }}</span> -->
-                            <span data-key="purchase_date">購入日: {{ goods.purchase_date }}</span><br>
-                            <span data-key="next_purchase_date">次回購入予定: {{ goods.next_purchase_date }}</span>
+                            <span data-key="purchase_date">購入日{{ goods.purchase_date|date:"Y/m/d" }}</span><br>
+                            <span data-key="next_purchase_date">次回購入予定{{ goods.next_purchase_date|date:"Y/m/d" }}</span>
                             {% include 'menu-modal.html' %}
                             </div>
                         <div>
@@ -67,12 +89,14 @@
                             <form action="{% url 'remind:bought-item' %}" method="POST">
                                 {% csrf_token %}
                                 <input type="hidden" name="item_id" value="{{ goods.id }}">
+                                <input type="hidden" name="tab_label" value="all">
                                 <button type="submit">買った</button>
                             </form>
                         
                             <form action="{% url 'remind:extend-item' %}" method="POST">
                                 {% csrf_token %}
                                 <input type="hidden" name="item_id" value="{{ goods.id }}">
+                                <input type="hidden" name="tab_label" value="all">
                                 <button type="submit">延長</button>
                             </form> 
                         </div>      
@@ -93,12 +117,14 @@
                             <form action="{% url 'remind:bought-item' %}" method="POST">
                                 {% csrf_token %}
                                 <input type="hidden" name="item_id" value="{{ d_goods.id }}">
+                                <input type="hidden" name="tab_label" value="daily-item">
                                 <button type="submit">買った</button>
                             </form>
                         
                             <form action="{% url 'remind:extend-item' %}" method="POST">
                                 {% csrf_token %}
                                 <input type="hidden" name="item_id" value="{{ d_goods.id }}">
+                                <input type="hidden" name="tab_label" value="daily-item">
                                 <button type="submit">延長</button>
                             </form> 
                         </div>      
@@ -119,12 +145,14 @@
                             <form action="{% url 'remind:bought-item' %}" method="POST">
                                 {% csrf_token %}
                                 <input type="hidden" name="item_id" value="{{ f_goods.id }}">
+                                <input type="hidden" name="tab_label" value="food">
                                 <button type="submit">買った</button>
                             </form>
                         
                             <form action="{% url 'remind:extend-item' %}" method="POST">
                                 {% csrf_token %}
                                 <input type="hidden" name="item_id" value="{{ f_goods.id }}">
+                                <input type="hidden" name="tab_label" value="food">
                                 <button type="submit">延長</button>
                             </form>
                         </div>      
@@ -145,12 +173,14 @@
                             <form action="{% url 'remind:bought-item' %}" method="POST">
                                 {% csrf_token %}
                                 <input type="hidden" name="item_id" value="{{ o_goods.id }}">
+                                <input type="hidden" name="tab_label" value="others">
                                 <button type="submit">買った</button>
                             </form>
                         
                             <form action="{% url 'remind:extend-item' %}" method="POST">
                                 {% csrf_token %}
                                 <input type="hidden" name="item_id" value="{{ o_goods.id }}">
+                                <input type="hidden" name="tab_label" value="others">
                                 <button type="submit">延長</button>
                             </form>
                         </div>      
