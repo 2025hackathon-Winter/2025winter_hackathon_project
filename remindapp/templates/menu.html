@@ -92,13 +92,13 @@
                             <!-- 2/24　うっちゃん追加 -->                            
                             <form action="{% url 'remind:bought-item' %}" method="POST">
                                 {% csrf_token %}
-                                <input type="hidden" name="item_id" value="{{ goods.id }}">
+                                <input type="hidden" name="item_id" value="{{ d_goods.id }}">
                                 <button type="submit">買った</button>
                             </form>
                         
                             <form action="{% url 'remind:extend-item' %}" method="POST">
                                 {% csrf_token %}
-                                <input type="hidden" name="item_id" value="{{ goods.id }}">
+                                <input type="hidden" name="item_id" value="{{ d_goods.id }}">
                                 <button type="submit">延長</button>
                             </form> 
                         </div>      
@@ -118,13 +118,13 @@
                             <!-- 2/24　うっちゃん追加 -->                            
                             <form action="{% url 'remind:bought-item' %}" method="POST">
                                 {% csrf_token %}
-                                <input type="hidden" name="item_id" value="{{ goods.id }}">
+                                <input type="hidden" name="item_id" value="{{ f_goods.id }}">
                                 <button type="submit">買った</button>
                             </form>
                         
                             <form action="{% url 'remind:extend-item' %}" method="POST">
                                 {% csrf_token %}
-                                <input type="hidden" name="item_id" value="{{ goods.id }}">
+                                <input type="hidden" name="item_id" value="{{ f_goods.id }}">
                                 <button type="submit">延長</button>
                             </form>
                         </div>      
@@ -144,13 +144,13 @@
                             <!-- 2/24　うっちゃん追加 -->                            
                             <form action="{% url 'remind:bought-item' %}" method="POST">
                                 {% csrf_token %}
-                                <input type="hidden" name="item_id" value="{{ goods.id }}">
+                                <input type="hidden" name="item_id" value="{{ o_goods.id }}">
                                 <button type="submit">買った</button>
                             </form>
                         
                             <form action="{% url 'remind:extend-item' %}" method="POST">
                                 {% csrf_token %}
-                                <input type="hidden" name="item_id" value="{{ goods.id }}">
+                                <input type="hidden" name="item_id" value="{{ o_goods.id }}">
                                 <button type="submit">延長</button>
                             </form>
                         </div>      
