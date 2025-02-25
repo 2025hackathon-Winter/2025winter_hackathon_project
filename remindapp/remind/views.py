@@ -69,34 +69,37 @@ class MenuView(View):
         # all goodsで取ると他のユーザーのアイテムも取ってしまう 
         # all_goods = MyGoods.objects.all()
 
-        # 次回購入期限順、最近買った順での並び替え
-        sort_symbols = {"sort_next_purchase":["",""],"sort_recent_purchase":["",""]}
-        if request.GET.get("sort") == "sort-next-purchase" or request.GET.get("sort") == "sort-next-purchase-ASC":
-            user_goods = MyGoods.objects.filter(uid=user_id).order_by('next_purchase_date')
-            sort_symbols["sort_next_purchase"] = ["-DESC","↑"]
-        elif request.GET.get("sort") == "sort-next-purchase-DESC":
-            user_goods = MyGoods.objects.filter(uid=user_id).order_by('-next_purchase_date')
-            sort_symbols["sort_next_purchase"] = ["-ASC","↓"]
-        elif request.GET.get("sort") == "sort-recent-purchase" or request.GET.get("sort") == "sort-recent-purchase-ASC":
-            user_goods = MyGoods.objects.filter(uid=user_id).order_by('purchase_date')
-            sort_symbols["sort_recent_purchase"] = ["-DESC","↑"]
-        elif request.GET.get("sort") == "sort-recent-purchase-DESC":
-            user_goods = MyGoods.objects.filter(uid=user_id).order_by('-purchase_date')
-            sort_symbols["sort_recent_purchase"] = ["-ASC","↓"]
-        else :
-            user_goods = MyGoods.objects.filter(uid=user_id)
+        # 2/26 うっちゃん 修正（本当にすみませんでした！）
+        # # 次回購入期限順、最近買った順での並び替え
+        # sort_symbols = {"sort_next_purchase":["",""],"sort_recent_purchase":["",""]}
+        # if request.GET.get("sort") == "sort-next-purchase" or request.GET.get("sort") == "sort-next-purchase-ASC":
+        #     user_goods = MyGoods.objects.filter(uid=user_id).order_by('next_purchase_date')
+        #     sort_symbols["sort_next_purchase"] = ["-DESC","↑"]
+        # elif request.GET.get("sort") == "sort-next-purchase-DESC":
+        #     user_goods = MyGoods.objects.filter(uid=user_id).order_by('-next_purchase_date')
+        #     sort_symbols["sort_next_purchase"] = ["-ASC","↓"]
+        # elif request.GET.get("sort") == "sort-recent-purchase" or request.GET.get("sort") == "sort-recent-purchase-ASC":
+        #     user_goods = MyGoods.objects.filter(uid=user_id).order_by('purchase_date')
+        #     sort_symbols["sort_recent_purchase"] = ["-DESC","↑"]
+        # elif request.GET.get("sort") == "sort-recent-purchase-DESC":
+        #     user_goods = MyGoods.objects.filter(uid=user_id).order_by('-purchase_date')
+        #     sort_symbols["sort_recent_purchase"] = ["-ASC","↓"]
+        # else :
+        user_goods = MyGoods.objects.filter(uid=user_id)
 
         daily_goods = user_goods.filter(category="日用品")  # "日用品"のカテゴリを取得
         food_goods = user_goods.filter(category="食品")  # "食料"のカテゴリを取得
         other_goods = user_goods.filter(category="その他")  # "その他"のカテゴリを取得
         new_regist_item = request.session.pop("new_regist_item", None) # セッションから新規追加アイテム名を取得し、使っていたセッションを削除
+        tab_label = request.session.pop("tab_label", None) # セッションから新規追加アイテム名を取得し、使っていたセッションを削除
         logger.debug(f"{daily_goods},{food_goods},{other_goods}")
         return render(request,'menu.html', {'goods_items':user_goods, 
                                             'daily_goods': daily_goods,
                                             'food_goods': food_goods,
                                             'other_goods': other_goods,
                                             'new_regist_item': new_regist_item,
-                                            'sort_symbols' : sort_symbols})
+                                            'tab_label' : tab_label})
+                                            # 'sort_symbols' : sort_symbols
 
     def post(self, request):
         # 入力された物品がテーブルに存在するか確認
@@ -149,7 +152,7 @@ class MenuView(View):
 
         else:
             # カテゴリを取得する
-            find_origin_item = DefaultGoods.objects.filter(name=new_item).first()
+            find_origin_item = RegistGoods.objects.filter(name=new_item).first()
 
             if find_origin_item is None:
                 error_message = f"{new_item}はデフォルト物品に存在しません。新規物品登録を行ってください。"
@@ -197,6 +200,7 @@ class BoughtItem(View):
         find_item.purchase_date = datetime.today()
         find_item.expire_date = None
         find_item.save()
+        request.session['tab_label'] = request.POST.get('tab_label')  # セッションに保存
         return redirect('remind:menu')
 
 # 延長ボタン押下
@@ -210,6 +214,7 @@ class ExtendItem(View):
         find_item.next_purchase_date = find_item.next_purchase_date+timedelta(find_item_term*7)
         logger.debug(f"{find_item.next_purchase_date}")  
         find_item.save()
+        request.session['tab_label'] = request.POST.get('tab_label')  # セッションに保存
         return redirect('remind:menu')
     
 # 新規物品登録　2025/2/16 うっちゃん追加
@@ -229,7 +234,7 @@ class MyitemsAdd(View):
         logger.debug(f"{item_name},{item_default_term},{item_category}")  
 
         # 入力された物品がテーブルに存在するか確認
-        item = DefaultGoods.objects.filter(name=item_name).first()
+        item = RegistGoods.objects.filter(name=item_name).first()
 
         if item:
             context = {'error_message': '商品がすでに存在しています。'}
@@ -239,7 +244,7 @@ class MyitemsAdd(View):
             logger.debug(f"{item_name},{item_default_term},{item_category}")  
 
             # 新しい物品をデータベースに保存
-            new_item = DefaultGoods(name=item_name,
+            new_item = RegistGoods(name=item_name,
                                     default_term=item_default_term,
                                     category=item_category)
             new_item.save()
@@ -275,7 +280,24 @@ def update_default_term(request):
 
     return redirect('remind:settings')
 
+# 期間の初期化
+# def reset_default_term(request):    
+#     user = request.user 
 
+#     if request.method == 'POST':
+#         default_term = request.POST.get('default_term')
+#         if default_term == '0':
+#             logger.debug("期間を初期化しました。")
+#             # usersの期間を更新する
+#             CustomUsers.objects.filter(uid=request.user).update(default_term='')
+
+#             # 自分で登録した物品の期間を更新する
+#             MyGoods.objects.filter(uid=request.user).update(default_term='')
+
+#         return redirect('remind:settings')
+#     return redirect('remind:settings')
+
+# お問い合わせ
 def Inquiry(request):
     return render(request,'inquiry.html')
 

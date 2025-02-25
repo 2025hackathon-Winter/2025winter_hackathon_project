@@ -98,3 +98,4 @@ class MyGoods(models.Model):
 
     def __str__(self):
         return self.goods_name
+
