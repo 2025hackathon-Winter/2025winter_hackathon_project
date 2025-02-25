@@ -66,12 +66,12 @@ class MenuView(View):
         user_id = user.uuid
         logger.debug(f"{user.uuid}")
 
-        all_goods = MyGoods.objects.all()
+        all_goods = MyGoods.objects.filter(uid=user_id)
         user_goods = MyGoods.objects.filter(uid=user_id)
 
-        daily_goods = user_goods.filter(category="日用品")  # "日用品"のカテゴリを取得
-        food_goods = user_goods.filter(category="食品")  # "食料"のカテゴリを取得
-        other_goods = user_goods.filter(category="その他")  # "その他"のカテゴリを取得
+        daily_goods = user_goods.filter(category="日用品", uid=user_id)  # "日用品"のカテゴリを取得
+        food_goods = user_goods.filter(category="食品", uid=user_id)  # "食料"のカテゴリを取得
+        other_goods = user_goods.filter(category="その他", uid=user_id)  # "その他"のカテゴリを取得
         logger.debug(f"{daily_goods},{food_goods},{other_goods}")
         return render(request,'menu.html', {'goods_items':all_goods, 'daily_goods': daily_goods,'food_goods': food_goods,'other_goods': other_goods})
 
@@ -218,7 +218,7 @@ def update_default_term(request):
      #return HttpResponse(f"Logged in user: {request.user.mailaddress}")
     user = request.user # 現在ログインしているユーザーを取得
 
-    user_goods = MyGoods.objects.filter(uid=user.id)
+    #user_goods = MyGoods.objects.filter(uid=request.user)
 
     if request.method == 'POST':
         defaultform = DefaultTermForm(request.POST, instance=user)
@@ -226,15 +226,11 @@ def update_default_term(request):
             default_term = defaultform.cleaned_data['default_term']
             defaultform.save()
 
-            user_goods.update(next_purchase_term=default_term)
+            #user_goods.update(next_purchase_term=default_term)
 
-            #MyGoods.objects.filter(uid=user.id).update(next_purchase_term=default_term)
+            MyGoods.objects.filter(uid=request.user).update(next_purchase_term=default_term)
 
             return redirect('remind:menu')
-
-    context = {
-        'user_goods': user_goods
-    }
 
     return redirect('remind:settings')
 
@@ -255,7 +251,7 @@ def editmodal(request):
             new_purchase_date = form.cleaned_data['purchase_date']
             new_next_purchase_term = form.cleaned_data['next_purchase_term']
 
-            goods.next_purchase_date = new_purchase_date + datetime.timedelta(weeks=new_next_purchase_term)
+            goods.next_purchase_date = new_purchase_date + timedelta(weeks=new_next_purchase_term)
 
             goods.save()
             return redirect('remind:menu')
