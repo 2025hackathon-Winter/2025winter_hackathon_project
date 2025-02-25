@@ -10,8 +10,8 @@
             <!-- <form action="./〇〇/{ **** }" method="POST">{% csrf_token %} actionにどこにデータを投げるか指定する。menuはユーザーごとに違う -->
                 <form action="" method="POST">{% csrf_token %}
                     <!-- <input type="text" placeholder="管理物品の検索"> -->
-                    <input type="text" placeholder="管理物品の検索" name="regist_item"
-                    {% if new_regist_items %} value="{{ new_regist_items.name }}" {% endif %}>
+                    <input type="text" placeholder="管理物品の検索" name="item_name"
+                    {% if new_regist_item %} value="{{ new_regist_item }}" {% endif %}>
                 <button type="submit">登録</button>    
             </form>
             <!-- うっちゃん追加 -->
@@ -21,11 +21,13 @@
         </search>  
     
         <div>
-            <div class="list-container">
+            <form action="" method="GET" class="list-container">
                 <div>管理物品一覧</div>
-                <button id="sort-next-purchase">次回購入期限順</button>
-                <button id="sort-recent-purchase">最近買った順</button>
-            </div>
+                <button type="submit" id="sort-next-purchase" name="sort" 
+                value="sort-next-purchase{{ sort_symbols.sort_next_purchase.0 }}">次回購入日順{{ sort_symbols.sort_next_purchase.1 }}</button>
+                <button type="submit" id="sort-recent-purchase" name="sort" 
+                value="sort-recent-purchase{{ sort_symbols.sort_recent_purchase.0 }}">最近買った順{{ sort_symbols.sort_recent_purchase.1 }}</button>
+            </form>
             <div>
 
             </div>
@@ -51,7 +53,7 @@
                     <div class="item">
                         <div>
                             <!-- <p id="purchase-status-{{ goods.id }}" class="purchase-status">〇</p> -->
-                            <p>{{ goods.goods_name }}</p><br> <!-- 2/24 うっちゃん追加 -->
+                            <!-- <p>{{ goods.goods_name }}</p><br> 2/24 うっちゃん追加 -->
                             <p class="js-modal-open" data-target="all-modal-{{ goods.id }}" data-expire-date="{{ goods.expire_date|date:'Y-m-d' }}">{{ goods.goods_name }}</p><br> <!--ALLのリスト-->
                             <!-- 2/24　うっちゃん削除 -->
                             <!-- <span data-key="purchase_date">購入日 {{ goods.purchase_date|date:"Y/m/d" }}</span><br> -->
