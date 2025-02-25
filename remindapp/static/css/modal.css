@@ -147,3 +147,16 @@
   .personal-modal-content button:hover {
     background: var(--pale_gray);
 }
+
+  .edit-button{
+    position: absolute;
+    top: 15px;
+    right: 15px;
+  }
+
+  .save-button{
+    position: absolute;
+    top: 15px;
+    right: 15px;
+  }
+  
