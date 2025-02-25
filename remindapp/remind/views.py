@@ -66,16 +66,44 @@ class MenuView(View):
         user_id = user.uuid
         logger.debug(f"{user.uuid}")
 
-        all_goods = MyGoods.objects.filter(uid=user_id)
-        user_goods = MyGoods.objects.filter(uid=user_id)
+        # all goodsで取ると他のユーザーのアイテムも取ってしまう 
+        # all_goods = MyGoods.objects.all()
 
-        daily_goods = user_goods.filter(category="日用品", uid=user_id)  # "日用品"のカテゴリを取得
-        food_goods = user_goods.filter(category="食品", uid=user_id)  # "食料"のカテゴリを取得
-        other_goods = user_goods.filter(category="その他", uid=user_id)  # "その他"のカテゴリを取得
+        # 次回購入期限順、最近買った順での並び替え
+        sort_symbols = {"sort_next_purchase":["",""],"sort_recent_purchase":["",""]}
+        if request.GET.get("sort") == "sort-next-purchase" or request.GET.get("sort") == "sort-next-purchase-ASC":
+            user_goods = MyGoods.objects.filter(uid=user_id).order_by('next_purchase_date')
+            sort_symbols["sort_next_purchase"] = ["-DESC","↑"]
+        elif request.GET.get("sort") == "sort-next-purchase-DESC":
+            user_goods = MyGoods.objects.filter(uid=user_id).order_by('-next_purchase_date')
+            sort_symbols["sort_next_purchase"] = ["-ASC","↓"]
+        elif request.GET.get("sort") == "sort-recent-purchase" or request.GET.get("sort") == "sort-recent-purchase-ASC":
+            user_goods = MyGoods.objects.filter(uid=user_id).order_by('purchase_date')
+            sort_symbols["sort_recent_purchase"] = ["-DESC","↑"]
+        elif request.GET.get("sort") == "sort-recent-purchase-DESC":
+            user_goods = MyGoods.objects.filter(uid=user_id).order_by('-purchase_date')
+            sort_symbols["sort_recent_purchase"] = ["-ASC","↓"]
+        else :
+            user_goods = MyGoods.objects.filter(uid=user_id)
+
+        daily_goods = user_goods.filter(category="日用品")  # "日用品"のカテゴリを取得
+        food_goods = user_goods.filter(category="食品")  # "食料"のカテゴリを取得
+        other_goods = user_goods.filter(category="その他")  # "その他"のカテゴリを取得
+        new_regist_item = request.session.pop("new_regist_item", None) # セッションから新規追加アイテム名を取得し、使っていたセッションを削除
         logger.debug(f"{daily_goods},{food_goods},{other_goods}")
-        return render(request,'menu.html', {'goods_items':all_goods, 'daily_goods': daily_goods,'food_goods': food_goods,'other_goods': other_goods})
+        return render(request,'menu.html', {'goods_items':user_goods, 
+                                            'daily_goods': daily_goods,
+                                            'food_goods': food_goods,
+                                            'other_goods': other_goods,
+                                            'new_regist_item': new_regist_item,
+                                            'sort_symbols' : sort_symbols})
 
     def post(self, request):
+        # 入力された物品がテーブルに存在するか確認
+        new_item = request.POST.get("item_name")
+        logger.debug(f"{new_item}")
+        find_new_item = MyGoods.objects.filter(goods_name=new_item).first()
+
         # ユーザー情報を変数に格納する
         user = CustomUsers.objects.get(mailaddress=request.user)
         user_id = user.uuid
@@ -85,23 +113,34 @@ class MenuView(View):
         find_uid = CustomUsers.objects.filter(uuid=user_id).first()
         logger.debug(f"{find_uid}")
 
-        new_item = request.POST.get("regist_item")
-        logger.debug(f"{new_item}")  
+        # 物品が入力されたか確認
+        if not new_item:
+            error_message = f"物品名を入力してください。"
+            user_goods = MyGoods.objects.filter(uid=find_uid.uuid)
+            daily_goods = user_goods.filter(category="日用品")
+            food_goods = user_goods.filter(category="食料")
+            other_goods = user_goods.filter(category="その他")
+            return render(request, 'menu.html', {
+                'goods_items': user_goods,
+                'daily_goods': daily_goods,
+                'food_goods': food_goods,
+                'other_goods': other_goods,
+                'error_message': error_message  # エラーメッセージを渡す
+            })
 
-        # 入力された物品がテーブルに存在するか確認
-        find_new_item = MyGoods.objects.filter(goods_name=new_item).first()
-
+        # MyGoodsに登録されている場合エラー
         if find_new_item:
             error_message = f"{find_new_item}はすでに管理物品一覧に存在します。値の更新を行ってください。"
 
-            all_goods = MyGoods.objects.all()
+            # all goodsで取ると他のユーザーのアイテムも取ってしまう 
+            # all_goods = MyGoods.objects.all()
             user_goods = MyGoods.objects.filter(uid=find_uid.uuid)
 
             daily_goods = user_goods.filter(category="日用品")
             food_goods = user_goods.filter(category="食料")
             other_goods = user_goods.filter(category="その他")
             return render(request, 'menu.html', {
-                'goods_items': all_goods,
+                'goods_items': user_goods,
                 'daily_goods': daily_goods,
                 'food_goods': food_goods,
                 'other_goods': other_goods,
@@ -115,14 +154,15 @@ class MenuView(View):
             if find_origin_item is None:
                 error_message = f"{new_item}はデフォルト物品に存在しません。新規物品登録を行ってください。"
 
-                all_goods = MyGoods.objects.all()
+                # all goodsで取ると他のユーザーのアイテムも取ってしまう 
+                # all_goods = MyGoods.objects.all()
                 user_goods = MyGoods.objects.filter(uid=find_uid.uuid)
 
                 daily_goods = user_goods.filter(category="日用品")
                 food_goods = user_goods.filter(category="食料")
                 other_goods = user_goods.filter(category="その他")
                 return render(request, 'menu.html', {
-                    'goods_items': all_goods,
+                    'goods_items': user_goods,
                     'daily_goods': daily_goods,
                     'food_goods': food_goods,
                     'other_goods': other_goods,
@@ -183,7 +223,7 @@ class MyitemsAdd(View):
         logger.debug(f"通ったよ")  
 
         item_name = request.POST.get('item_name')
-        item_default_term = request.POST.get('item_defltterm',4)
+        item_default_term = request.POST.get('default_term',4)
         # item_default_term = int(item_default_term) 
         item_category = request.POST.get("category")
         logger.debug(f"{item_name},{item_default_term},{item_category}")  
@@ -204,8 +244,9 @@ class MyitemsAdd(View):
                                     category=item_category)
             new_item.save()
             # 成功したらメニュー画面へ
-            return render(request,'menu.html', {'new_regist_items':new_item})   
-            # return redirect('remind:menu')
+            # return render(request,'menu.html', {'new_regist_items':new_item})   
+            request.session['new_regist_item'] = item_name  # セッションに保存
+            return redirect('remind:menu')
 
 
 # 設定画面　2025/2/16 うっちゃん追加
