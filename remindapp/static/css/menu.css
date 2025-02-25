@@ -107,6 +107,10 @@ input[name="tab-label"] {
     padding-bottom: 8px;
 }
 
+.item form{
+    display: inline;
+}
+
 .item p{
     display: inline;
     text-align: left;
@@ -121,7 +125,7 @@ input[name="tab-label"] {
 .item span{
     float: left;
     font-size: 12px;
-    padding-left: 24px;
+    padding-left: 16px;
 }
 
 
@@ -129,4 +133,12 @@ input[name="tab-label"] {
 .expired {
         color: red;
         font-family: "Hachi Maru Pop";
+}
+
+.error{
+    text-align: center;
+    color: red;
+    font-size: 16px;
+    margin-top: 20px;
+    display: block;
 }
