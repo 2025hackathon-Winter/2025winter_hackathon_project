@@ -197,8 +197,10 @@ class BoughtItem(View):
     def post(self,request):
         item_id = request.POST.get('item_id')
         find_item = get_object_or_404(MyGoods, id=item_id)
+        find_item_term = find_item.next_purchase_term
         find_item.purchase_date = datetime.today()
         find_item.expire_date = None
+        find_item.next_purchase_date = find_item.purchase_date + timedelta(find_item_term*7)
         find_item.save()
         request.session['tab_label'] = request.POST.get('tab_label')  # セッションに保存
         return redirect('remind:menu')
@@ -317,6 +319,7 @@ def editmodal(request):
             goods.next_purchase_date = new_purchase_date + timedelta(weeks=new_next_purchase_term)
 
             goods.save()
+            request.session['tab_label'] = request.POST.get('tab_label')
             return redirect('remind:menu')
 
     return redirect('remind:menu')
