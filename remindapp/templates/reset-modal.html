@@ -12,8 +12,12 @@
             </div>
              <!--ALLのリスト-->
              <div>
+              <!-- 2/26　うっちゃん 手こずっているのでコメントアウト-->
+              <!-- <form action="{% url 'remind:reset_default_term' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="default_term" value="0"> -->
               <form method="POST">
-                <input type="hidden" name="○○" value="○○">
+                <input type="hidden" name="○○" value="○○">                
                 <button type="submit">初期化</button>
               </form>
                 <button type="submit">しない</button>

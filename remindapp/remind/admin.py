@@ -24,5 +24,5 @@ class MyGoodsAdmin(admin.ModelAdmin):
 admin.site.register(CustomUsers, CustomUsersAdmin)
 # Register your models here.
 admin.site.register(RemindModel)
-admin.site.register(DefaultGoods) #アナザー追記defaultgoods, mygoods
+admin.site.register(RegistGoods) #アナザー追記defaultgoods, mygoods うっちゃんDB名変更により変更
 admin.site.register(MyGoods, MyGoodsAdmin) #アナザー追記defaultgoods, mygoods

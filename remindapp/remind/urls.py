@@ -17,8 +17,10 @@ urlpatterns = [
     path('myitems/add/', MyitemsAdd.as_view(), name='myitems-add'), # 2025/2/16 うっちゃん追記 新規登録画面
     path('settings/', views.settings_page, name='settings'),
     path('settings/default_term', views.update_default_term, name='default_term'),
+    # 2/26　うっちゃん 手こずっているのでコメントアウト
+    # path('settings/reset/', views.reset_default_term, name='reset_default_term'),
     path('inquiry/',views.Inquiry,name='inquiry'),
     path('editmodal/', views.editmodal, name='editmodal'),
     path('bought-item/', BoughtItem.as_view(), name='bought-item'), 
-    path('extend-item/', ExtendItem.as_view(), name='extend-item')    
+    path('extend-item/', ExtendItem.as_view(), name='extend-item')
 ]
