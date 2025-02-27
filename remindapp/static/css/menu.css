@@ -19,6 +19,19 @@
     height: 40px;
 }
 
+/* 「削除」「メニュー」ボタン追加 */
+.transition-container{
+    margin-left: 280px;
+    margin-bottom: 5px;
+    margin-top: -27px;
+}
+
+.transition-container a{
+    font-size: 13px;
+    color: var(--black);
+    text-decoration-color: var(--black);
+}
+
 .list-container div{
     display: inline;
 }
