@@ -18,7 +18,8 @@ urlpatterns = [
     path('settings/', views.settings_page, name='settings'),
     path('settings/default_term', views.update_default_term, name='default_term'),
     # 2/26　うっちゃん 手こずっているのでコメントアウト
-    # path('settings/reset/', views.reset_default_term, name='reset_default_term'),
+    path('settings/reset_default_term/', views.reset_default_term, name='reset_default_term'),
+    path('settings/change_personal_info/', views.change_personal_info, name='change_personal_info'),
     path('inquiry/',views.Inquiry,name='inquiry'),
     path('editmodal/', views.editmodal, name='editmodal'),
     path('bought-item/', BoughtItem.as_view(), name='bought-item'), 

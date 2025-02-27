@@ -7,15 +7,15 @@
       <!-- モーダル内部のコンテンツ -->
       <div class="personal-modal-content">
           <div>
-            <form action="" method="POST">
+            <form action="{% url 'remind:change_personal_info' %}" method="POST">{% csrf_token %}
               <p>ログイン情報変更</p>
               <div class="personal">
                 <label for="E-mail">メールアドレス</label>
-                <input type="email" id="E-mail" name="email" value="{{ mailaddress }}"> 
+                <input type="email" id="E-mail" name="email" value="{{ before_mailaddress }}"> 
                 <label for="password">パスワード</label>
-                <input type="password" id="password" name="Password" placeholder=" 変更後のパスワード">
+                <input type="password" id="password" name="password" placeholder=" 変更後のパスワード">
                 <label for="password">確認用パスワード</label>
-                <input type="password" id="password" name="Password" placeholder=" パスワード確認用">
+                <input type="password" id="confirm_password" name="confirm_password" placeholder=" パスワード確認用">
               </div>
               <button type="submit">変更する</button>
             </form>

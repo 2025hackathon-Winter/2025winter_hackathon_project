@@ -80,8 +80,8 @@
                             <!-- 2/24　うっちゃん削除 -->
                             <!-- <span data-key="purchase_date">購入日 {{ goods.purchase_date|date:"Y/m/d" }}</span><br> -->
                             <!-- <span data-key="next_purchase_date">次回購入予定 {{ goods.next_purchase_date|date:"Y/m/d" }}</span> -->
-                            <span data-key="purchase_date">購入日{{ goods.purchase_date|date:"Y/m/d" }}</span><br>
-                            <span data-key="next_purchase_date">次回購入予定{{ goods.next_purchase_date|date:"Y/m/d" }}</span>
+                            <span data-key="purchase_date">購入日：{{ goods.purchase_date|date:"Y/m/d" }}</span><br>
+                            <span data-key="next_purchase_date">次回購入予定：{{ goods.next_purchase_date|date:"Y/m/d" }}</span>
                             {% include 'menu-modal.html' %}
                             </div>
                         <div>
@@ -108,8 +108,8 @@
                     <div class="item">
                         <div>
                             <p class="js-modal-open" data-target="daily-modal-{{ d_goods.id }}">{{ d_goods.goods_name }}</p><br> <!--日用品のリスト-->
-                            <span data-key="purchase_date">購入日 {{ d_goods.purchase_date|date:"Y/m/d" }}</span><br>
-                            <span data-key="next_purchase_date">次回購入予定 {{ d_goods.next_purchase_date|date:"Y/m/d" }}</span>
+                            <span data-key="purchase_date">購入日：{{ d_goods.purchase_date|date:"Y/m/d" }}</span><br>
+                            <span data-key="next_purchase_date">次回購入予定：{{ d_goods.next_purchase_date|date:"Y/m/d" }}</span>
                             {% include 'menu-modal.html' %}
                             </div>
                         <div>
@@ -136,8 +136,8 @@
                     <div class="item">
                         <div>
                             <p class="js-modal-open" data-target="food-modal-{{ f_goods.id }}" data-expire-date="{{ f_goods.expire_date|date:'Y-m-d' }}">{{ f_goods.goods_name }}</p><br> <!--食品のリスト-->
-                            <span data-key="purchase_date">購入日 {{ f_goods.purchase_date|date:"Y/m/d" }}</span><br>
-                            <span data-key="next_purchase_date">次回購入予定 {{ f_goods.next_purchase_date|date:"Y/m/d" }}</span>
+                            <span data-key="purchase_date">購入日：{{ f_goods.purchase_date|date:"Y/m/d" }}</span><br>
+                            <span data-key="next_purchase_date">次回購入予定：{{ f_goods.next_purchase_date|date:"Y/m/d" }}</span>
                             {% include 'menu-modal.html' %}
                             </div>
                         <div>
@@ -164,8 +164,8 @@
                     <div class="item">
                         <div>
                             <p class="js-modal-open" data-target="other-modal-{{ o_goods.id }}">{{ o_goods.goods_name }}</p><br> <!--その他のリスト-->
-                            <span data-key="purchase_date">購入日 {{ o_goods.purchase_date|date:"Y/m/d" }}</span><br>
-                            <span data-key="next_purchase_date">次回購入予定 {{ o_goods.next_purchase_date|date:"Y/m/d" }}</span>
+                            <span data-key="purchase_date">購入日：{{ o_goods.purchase_date|date:"Y/m/d" }}</span><br>
+                            <span data-key="next_purchase_date">次回購入予定：{{ o_goods.next_purchase_date|date:"Y/m/d" }}</span>
                             {% include 'menu-modal.html' %}
                             </div>
                         <div>

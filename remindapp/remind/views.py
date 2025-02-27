@@ -7,16 +7,20 @@ from django.contrib.auth.views import LogoutView
 from django.urls import reverse_lazy
 from .models import CustomUsers,MyGoods
 from .forms import *
-from django.contrib.auth import authenticate, login as auth_login,get_user_model
+from django.contrib.auth import authenticate, login as auth_login,get_user_model,update_session_auth_hash
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 import logging
 from django.views import View
 from remind.models import MyGoods
 from datetime import datetime,timedelta
+# LINE連携
+import requests
+from django.http import JsonResponse
 
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("remind") 
 # def helloworldfunction(reqest):
 #     returnedobject = HttpResponse('<h1>hello world</h1>')
 #     return returnedobject
@@ -64,7 +68,7 @@ class MenuView(View):
     def get(self, request):
         user = CustomUsers.objects.get(mailaddress=request.user.mailaddress)
         user_id = user.uuid
-        logger.debug(f"{user.uuid}")
+        logger.debug(f"{user.uuid}がログインしていますよ")
 
         # all goodsで取ると他のユーザーのアイテムも取ってしまう 
         # all_goods = MyGoods.objects.all()
@@ -233,6 +237,11 @@ class MyitemsAdd(View):
         item_category = request.POST.get("category")
         logger.debug(f"{item_name},{item_default_term},{item_category}")  
 
+        if " " in item_name or "　" in item_name:  # スペースを含む場合はエラー
+            logger.debug(f"Error: item_name contains spaces")
+            context = {'error_message': '商品を入力してください。'}
+            return render(request, self.template_name, context)
+                
         # 入力された物品がテーブルに存在するか確認
         item = RegistGoods.objects.filter(name=item_name).first()
 
@@ -257,8 +266,12 @@ class MyitemsAdd(View):
 # 設定画面　2025/2/16 うっちゃん追加
 @login_required
 def settings_page(request):
-    return render(request, 'setting.html')
+    user = CustomUsers.objects.get(mailaddress=request.user.mailaddress)
+    before_mailaddress = user.mailaddress  # 現在のメールアドレス
+    logger.debug(f"before_mailaddress: {before_mailaddress}")
+    return render(request, 'setting.html', {'before_mailaddress': before_mailaddress})
 
+# 次回購入までの期間の一括設定
 @login_required
 def update_default_term(request):
      #return HttpResponse(f"Logged in user: {request.user.mailaddress}")
@@ -281,21 +294,75 @@ def update_default_term(request):
     return redirect('remind:settings')
 
 # 期間の初期化
-# def reset_default_term(request):    
-#     user = request.user 
+def reset_default_term(request):    
+    if request.method == 'POST':
+        default_term = request.POST.get('default_term')
+        if default_term == '0':
+            logger.debug("期間を初期化しました。")
+            user = CustomUsers.objects.get(mailaddress=request.user.mailaddress)
+            user_id = user.uuid
+            logger.debug(f"{user_id}はこれだよ")
+            # usersの期間を更新する
+            CustomUsers.objects.filter(uuid=user_id).update(default_term=0)
 
-#     if request.method == 'POST':
-#         default_term = request.POST.get('default_term')
-#         if default_term == '0':
-#             logger.debug("期間を初期化しました。")
-#             # usersの期間を更新する
-#             CustomUsers.objects.filter(uid=request.user).update(default_term='')
+            # 自分で登録した物品の期間を更新する
+            goods_list = MyGoods.objects.filter(uid=user_id)
+            for goods in goods_list:
+                new_first_term = goods.first_term
+                goods.next_purchase_term = new_first_term
+                goods.save()
+        return redirect('remind:settings')
 
-#             # 自分で登録した物品の期間を更新する
-#             MyGoods.objects.filter(uid=request.user).update(default_term='')
+# メールアドレス・パスワードの変更
+@login_required
+def change_personal_info(request):
+    if request.method == 'POST':
+     if request.method == 'POST':
+        new_email = request.POST.get('email')
+        new_password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
+        
+        try:
+            user = CustomUsers.objects.get(mailaddress=request.user.mailaddress)
 
-#         return redirect('remind:settings')
-#     return redirect('remind:settings')
+            # フラグを用意（どちらも変更しない場合に備える）
+            email_updated = False
+            password_updated = False
+
+            # メールアドレスの変更処理
+            if new_email and new_email != user.mailaddress:
+                user.mailaddress = new_email
+                email_updated = True
+
+            # パスワードの変更処理
+            if new_password:
+                if new_password == confirm_password:
+                    user.set_password(new_password)
+                    password_updated = True
+                else:
+                    logger.error("パスワードが一致しません")
+                    messages.error(request, f"パスワードが一致しません")
+                    return redirect('remind:change_personal_info')
+
+            # 変更があった場合のみ保存
+            if email_updated or password_updated:
+                user.save()
+
+                if password_updated:
+                    # セッションの認証情報を更新（ログアウトされないように）
+                    update_session_auth_hash(request, user)
+
+                logger.debug(f"ユーザー情報を更新しました: {new_email if email_updated else 'メール変更なし'}")
+                messages.error(request, f"アカウント情報を更新しました")
+
+            return redirect('remind:settings')
+
+        except CustomUsers.DoesNotExist:
+            logger.error("ユーザーが見つかりませんでした")
+            messages.error(request, f"ユーザー情報の取得に失敗しました")
+            return redirect('remind:settings')
+
+    return redirect('remind:settings')
 
 # お問い合わせ
 def Inquiry(request):
@@ -333,3 +400,18 @@ class UserCreateView(CreateView):
 class HelloWorldClass(TemplateView):
     template_name = 'base.html'
 
+# LINE連携
+def send_line_notify(request):
+    LINE_NOTIFY_TOKEN = "YOUR_ACCESS_TOKEN"
+    message = "Djangoからの通知です！"
+    
+    url = "https://notify-api.line.me/api/notify"
+    headers = {"Authorization": f"Bearer {LINE_NOTIFY_TOKEN}"}
+    data = {"message": message}
+
+    response = requests.post(url, headers=headers, data=data)
+    
+    if response.status_code == 200:
+        return JsonResponse({"status": "success", "message": "通知を送信しました"})
+    else:
+        return JsonResponse({"status": "error", "message": response.text})

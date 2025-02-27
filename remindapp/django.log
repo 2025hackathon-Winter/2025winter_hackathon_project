@@ -1,0 +1,9 @@
+Watching for file changes with StatReloader
+"GET /menu/? HTTP/1.1" 200 42678
+"POST /menu/? HTTP/1.1" 200 42837
+"GET /myitems/add/ HTTP/1.1" 200 3117
+"POST /myitems/add/ HTTP/1.1" 302 0
+"GET /menu/ HTTP/1.1" 200 42709
+"POST /menu/ HTTP/1.1" 302 0
+"GET /menu/ HTTP/1.1" 200 61453
+/app/app/settings.py changed, reloading.
