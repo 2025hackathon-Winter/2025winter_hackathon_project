@@ -22,6 +22,7 @@
             <form method= "POST" action="{% url 'remind:editmodal' %}">
               {% csrf_token %}
               <input type="hidden" name="goods_id" value="{{ goods.id }}">
+              <input type="hidden" name="tab_label" value="all">
               <button type="submit" class="save-button" style="display: none;">保存</button> <!-- 動かしました：MANA追記 -->
               <div class="edit-mode" style="display: none;">
                 <span>購入日: <input type="date" class="input-purchase-date" name="purchase_date" value="{{ goods.purchase_date|date:'Y-m-d' }}"></span><br>
@@ -56,6 +57,7 @@
             <form method= "POST" action="{% url 'remind:editmodal' %}">
               {% csrf_token %}
               <input type="hidden" name="goods_id" value="{{ d_goods.id }}">
+              <input type="hidden" name="tab_label" value="daily-item">
               <button type="submit" class="save-button" style="display: none;">保存</button>
               <div class="edit-mode" style="display: none;"> <!--編集ボタンを押すまで非表示にしておく-->
                 <span>購入日: <input type="date" class="input-purchase-date" name="purchase_date" value="{{ d_goods.purchase_date|date:'Y-m-d' }}"></span><br>
@@ -90,6 +92,7 @@
             <form method= "POST" action="{% url 'remind:editmodal' %}">
               {% csrf_token %}
               <input type="hidden" name="goods_id" value="{{ f_goods.id }}">
+              <input type="hidden" name="tab_label" value="food">
               <button type="submit" class="save-button" style="display: none;">保存</button>
               <div class="edit-mode" style="display: none;">
                 <span>購入日: <input type="date" class="input-purchase-date" name="purchase_date" value="{{ f_goods.purchase_date|date:'Y-m-d' }}"></span><br>
@@ -124,6 +127,7 @@
             <form method= "POST" action="{% url 'remind:editmodal' %}">
               {% csrf_token %}
               <input type="hidden" name="goods_id" value="{{ o_goods.id }}">
+              <input type="hidden" name="tab_label" value="others">
               <button type="submit" class="save-button" style="display: none;">保存</button>
               <div class="edit-mode" style="display: none;">
                 <span>購入日: <input type="date" class="input-purchase-date" name="purchase_date" value="{{ o_goods.purchase_date|date:'Y-m-d' }}"></span><br>
