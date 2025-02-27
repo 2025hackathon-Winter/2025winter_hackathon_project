@@ -21,15 +21,32 @@
 
 /* 「削除」「メニュー」ボタン追加 */
 .transition-container{
-    margin-left: 280px;
-    margin-bottom: 5px;
-    margin-top: -27px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: -10px;
 }
 
 .transition-container a{
-    font-size: 13px;
-    color: var(--black);
-    text-decoration-color: var(--black);
+    display: flex;
+    text-align: center;
+    justify-content: center;  /* 水平方向の中央 */
+    align-items: center;    
+    font-size: 16px;
+    background-color: var(--white);
+    color: var(--greenbule);
+    border:1px solid var(--greenbule);
+    border-radius: 8px;
+    text-decoration: none;
+    width: 76px;
+    height: 32px;
+    margin-bottom: 16px;
+    margin-right: 20px;
+    transition: 0.2s;
+}
+
+.transition-container a:hover {
+    background-color: var(--pale_gray);
 }
 
 .list-container div{
