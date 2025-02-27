@@ -23,5 +23,7 @@ urlpatterns = [
     path('inquiry/',views.Inquiry,name='inquiry'),
     path('editmodal/', views.editmodal, name='editmodal'),
     path('bought-item/', BoughtItem.as_view(), name='bought-item'), 
-    path('extend-item/', ExtendItem.as_view(), name='extend-item')
+    path('extend-item/', ExtendItem.as_view(), name='extend-item'),
+    path('menu/delete', views.delete_item, name='delete-item'),
+    path('menu/delete/item', views.delete, name='delete')
 ]

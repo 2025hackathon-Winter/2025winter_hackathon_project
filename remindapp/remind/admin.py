@@ -17,12 +17,15 @@ class CustomUsersAdmin(UserAdmin):
     )
     ordering = ("mailaddress",)
 
+class ResistGoodsAdmin(admin.ModelAdmin):
+    list_display = ("id", "name", "is_default")
+
 class MyGoodsAdmin(admin.ModelAdmin):
-    list_display = ("id", "uid", "goods_name", "category", "purchase_date", "next_purchase_date", "expire_date", "next_purchase_term", "first_term")
+    list_display = ("id", "uid", "goods", "goods_name", "category", "purchase_date", "next_purchase_date", "expire_date", "next_purchase_term", "first_term")
 
 # MANA追記　サイト管理画面に表示
 admin.site.register(CustomUsers, CustomUsersAdmin)
 # Register your models here.
 admin.site.register(RemindModel)
-admin.site.register(RegistGoods) #アナザー追記defaultgoods, mygoods うっちゃんDB名変更により変更
+admin.site.register(RegistGoods, ResistGoodsAdmin) #アナザー追記defaultgoods, mygoods うっちゃんDB名変更により変更
 admin.site.register(MyGoods, MyGoodsAdmin) #アナザー追記defaultgoods, mygoods

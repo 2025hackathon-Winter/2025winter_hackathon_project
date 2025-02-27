@@ -5,7 +5,7 @@ from django.views.generic import TemplateView, CreateView
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.views import LogoutView
 from django.urls import reverse_lazy
-from .models import CustomUsers,MyGoods
+from .models import CustomUsers,MyGoods,RegistGoods
 from .forms import *
 from django.contrib.auth import authenticate, login as auth_login,get_user_model,update_session_auth_hash
 from django.contrib.auth.forms import AuthenticationForm
@@ -390,6 +390,34 @@ def editmodal(request):
 
     return redirect('remind:menu')
 
+
+def delete_item(request):
+    user = CustomUsers.objects.get(mailaddress=request.user.mailaddress)
+    user_id = user.uuid
+
+    user_goods = MyGoods.objects.filter(uid=user_id)
+
+    daily_goods = user_goods.filter(category="日用品")  # "日用品"のカテゴリを取得
+    food_goods = user_goods.filter(category="食品")  # "食料"のカテゴリを取得
+    other_goods = user_goods.filter(category="その他")  # "その他"のカテゴリを取得
+    new_regist_item = request.session.pop("new_regist_item", None) # セッションから新規追加アイテム名を取得し、使っていたセッションを削除
+    tab_label = request.session.pop("tab_label", None) # セッションから新規追加アイテム名を取得し、使っていたセッションを削除
+
+    return render(request,'delete-item.html', {'goods_items':user_goods, 
+                                                'daily_goods': daily_goods,
+                                                'food_goods': food_goods,
+                                                'other_goods': other_goods,
+                                                'new_regist_item': new_regist_item,
+                                                'tab_label' : tab_label})
+
+
+def delete(request):
+    item_id = request.POST.get('item_id')
+    find_item = get_object_or_404(MyGoods, id=item_id)
+    find_item.delete()
+    
+    request.session['tab_label'] = request.POST.get('tab_label')  # セッションに保存
+    return redirect('remind:delete-item')
 
 # サインアップ　2025/2/13 MANA追記
 class UserCreateView(CreateView):

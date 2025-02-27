@@ -1,6 +1,6 @@
 {% extends 'base-menu.html' %}
 
-{% block title %}メニュー画面{% endblock title %}
+{% block title %}メニュー削除画面{% endblock title %}
 
 
 {% block content %}
@@ -10,18 +10,18 @@
             <!-- <form action="./〇〇/{ **** }" method="POST">{% csrf_token %} actionにどこにデータを投げるか指定する。menuはユーザーごとに違う -->
                 <form action="" method="POST">{% csrf_token %}
                     <!-- <input type="text" placeholder="管理物品の検索"> -->
-                    <input type="text" placeholder="管理物品の検索" name="item_name"
+                    <input type="text" placeholder="管理物品の検索" name="item_name" style="visibility: hidden;"
                     {% if new_regist_item %} value="{{ new_regist_item }}" {% endif %}>
-                <button type="submit">登録</button>    
+                <button type="submit" style="visibility: hidden;">登録</button>    
             </form>
             <!-- うっちゃん追加 -->
             {% if error_message %}
                 <p class="error">{{ error_message }}</p>
             {% endif %}               
         </search>
-
+        
         <div class="transition-container">
-            <a href="{% url 'remind:delete-item' %}">削除する</a>
+            <a href="{% url 'remind:menu' %}">メニュー</a>
         </div>
     
         <div>
@@ -84,25 +84,20 @@
                             <!-- 2/24　うっちゃん削除 -->
                             <!-- <span data-key="purchase_date">購入日 {{ goods.purchase_date|date:"Y/m/d" }}</span><br> -->
                             <!-- <span data-key="next_purchase_date">次回購入予定 {{ goods.next_purchase_date|date:"Y/m/d" }}</span> -->
-                            <span data-key="purchase_date">購入日：{{ goods.purchase_date|date:"Y/m/d" }}</span><br>
-                            <span data-key="next_purchase_date">次回購入予定：{{ goods.next_purchase_date|date:"Y/m/d" }}</span>
+                            <span data-key="purchase_date">購入日{{ goods.purchase_date|date:"Y/m/d" }}</span><br>
+                            <span data-key="next_purchase_date">次回購入予定{{ goods.next_purchase_date|date:"Y/m/d" }}</span>
                             {% include 'menu-modal.html' %}
                             </div>
                         <div>
                             <!-- 2/24　うっちゃん追加 -->                            
-                            <form action="{% url 'remind:bought-item' %}" method="POST">
+                            <form action="{% url 'remind:delete' %}" method="POST">
                                 {% csrf_token %}
+                                <input type="hidden" name="item_name" value="{{ goods.goods }}">
                                 <input type="hidden" name="item_id" value="{{ goods.id }}">
                                 <input type="hidden" name="tab_label" value="all">
-                                <button type="submit">買った</button>
+                                <button type="submit">削除</button>
                             </form>
-                        
-                            <form action="{% url 'remind:extend-item' %}" method="POST">
-                                {% csrf_token %}
-                                <input type="hidden" name="item_id" value="{{ goods.id }}">
-                                <input type="hidden" name="tab_label" value="all">
-                                <button type="submit">延長</button>
-                            </form> 
+
                         </div>      
                     </div>
                     {% endfor %}
@@ -112,25 +107,19 @@
                     <div class="item">
                         <div>
                             <p class="js-modal-open" data-target="daily-modal-{{ d_goods.id }}">{{ d_goods.goods_name }}</p><br> <!--日用品のリスト-->
-                            <span data-key="purchase_date">購入日：{{ d_goods.purchase_date|date:"Y/m/d" }}</span><br>
-                            <span data-key="next_purchase_date">次回購入予定：{{ d_goods.next_purchase_date|date:"Y/m/d" }}</span>
+                            <span data-key="purchase_date">購入日 {{ d_goods.purchase_date|date:"Y/m/d" }}</span><br>
+                            <span data-key="next_purchase_date">次回購入予定 {{ d_goods.next_purchase_date|date:"Y/m/d" }}</span>
                             {% include 'menu-modal.html' %}
                             </div>
                         <div>
                             <!-- 2/24　うっちゃん追加 -->                            
-                            <form action="{% url 'remind:bought-item' %}" method="POST">
+                            <form action="{% url 'remind:delete' %}" method="POST">
                                 {% csrf_token %}
+                                <input type="hidden" name="item_name" value="{{ goods.goods }}">
                                 <input type="hidden" name="item_id" value="{{ d_goods.id }}">
                                 <input type="hidden" name="tab_label" value="daily-item">
-                                <button type="submit">買った</button>
+                                <button type="submit">削除</button>
                             </form>
-                        
-                            <form action="{% url 'remind:extend-item' %}" method="POST">
-                                {% csrf_token %}
-                                <input type="hidden" name="item_id" value="{{ d_goods.id }}">
-                                <input type="hidden" name="tab_label" value="daily-item">
-                                <button type="submit">延長</button>
-                            </form> 
                         </div>      
                     </div>
                     {% endfor %}
@@ -140,24 +129,18 @@
                     <div class="item">
                         <div>
                             <p class="js-modal-open" data-target="food-modal-{{ f_goods.id }}" data-expire-date="{{ f_goods.expire_date|date:'Y-m-d' }}">{{ f_goods.goods_name }}</p><br> <!--食品のリスト-->
-                            <span data-key="purchase_date">購入日：{{ f_goods.purchase_date|date:"Y/m/d" }}</span><br>
-                            <span data-key="next_purchase_date">次回購入予定：{{ f_goods.next_purchase_date|date:"Y/m/d" }}</span>
+                            <span data-key="purchase_date">購入日 {{ f_goods.purchase_date|date:"Y/m/d" }}</span><br>
+                            <span data-key="next_purchase_date">次回購入予定 {{ f_goods.next_purchase_date|date:"Y/m/d" }}</span>
                             {% include 'menu-modal.html' %}
                             </div>
                         <div>
                             <!-- 2/24　うっちゃん追加 -->                            
-                            <form action="{% url 'remind:bought-item' %}" method="POST">
+                            <form action="{% url 'remind:delete' %}" method="POST">
                                 {% csrf_token %}
+                                <input type="hidden" name="item_name" value="{{ goods.goods }}">
                                 <input type="hidden" name="item_id" value="{{ f_goods.id }}">
                                 <input type="hidden" name="tab_label" value="food">
-                                <button type="submit">買った</button>
-                            </form>
-                        
-                            <form action="{% url 'remind:extend-item' %}" method="POST">
-                                {% csrf_token %}
-                                <input type="hidden" name="item_id" value="{{ f_goods.id }}">
-                                <input type="hidden" name="tab_label" value="food">
-                                <button type="submit">延長</button>
+                                <button type="submit">削除</button>
                             </form>
                         </div>      
                     </div>
@@ -168,24 +151,18 @@
                     <div class="item">
                         <div>
                             <p class="js-modal-open" data-target="other-modal-{{ o_goods.id }}">{{ o_goods.goods_name }}</p><br> <!--その他のリスト-->
-                            <span data-key="purchase_date">購入日：{{ o_goods.purchase_date|date:"Y/m/d" }}</span><br>
-                            <span data-key="next_purchase_date">次回購入予定：{{ o_goods.next_purchase_date|date:"Y/m/d" }}</span>
+                            <span data-key="purchase_date">購入日 {{ o_goods.purchase_date|date:"Y/m/d" }}</span><br>
+                            <span data-key="next_purchase_date">次回購入予定 {{ o_goods.next_purchase_date|date:"Y/m/d" }}</span>
                             {% include 'menu-modal.html' %}
                             </div>
                         <div>
                             <!-- 2/24　うっちゃん追加 -->                            
-                            <form action="{% url 'remind:bought-item' %}" method="POST">
+                            <form action="{% url 'remind:delete' %}" method="POST">
                                 {% csrf_token %}
+                                <input type="hidden" name="item_name" value="{{ goods.goods }}">
                                 <input type="hidden" name="item_id" value="{{ o_goods.id }}">
                                 <input type="hidden" name="tab_label" value="others">
-                                <button type="submit">買った</button>
-                            </form>
-                        
-                            <form action="{% url 'remind:extend-item' %}" method="POST">
-                                {% csrf_token %}
-                                <input type="hidden" name="item_id" value="{{ o_goods.id }}">
-                                <input type="hidden" name="tab_label" value="others">
-                                <button type="submit">延長</button>
+                                <button type="submit">削除</button>
                             </form>
                         </div>      
                     </div>
