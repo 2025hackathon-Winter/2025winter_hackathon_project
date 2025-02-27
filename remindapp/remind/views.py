@@ -106,11 +106,6 @@ class MenuView(View):
                                             # 'sort_symbols' : sort_symbols
 
     def post(self, request):
-        # 入力された物品がテーブルに存在するか確認
-        new_item = request.POST.get("item_name")
-        logger.debug(f"{new_item}")
-        find_new_item = MyGoods.objects.filter(goods_name=new_item).first()
-
         # ユーザー情報を変数に格納する
         user = CustomUsers.objects.get(mailaddress=request.user)
         user_id = user.uuid
@@ -119,6 +114,10 @@ class MenuView(View):
         # ユーザーIDを取得
         find_uid = CustomUsers.objects.filter(uuid=user_id).first()
         logger.debug(f"{find_uid}")
+        # 入力された物品がテーブルに存在するか確認
+        new_item = request.POST.get("item_name")
+        logger.debug(f"{new_item}")
+        find_new_item = MyGoods.objects.filter(goods_name=new_item,uid=find_uid.uuid).first()
 
         # 物品が入力されたか確認
         if not new_item:
@@ -349,7 +348,7 @@ def change_personal_info(request):
                 user.save()
 
                 if password_updated:
-                    # セッションの認証情報を更新（ログアウトされないように）
+                    # セッションの認証情報を更新（ログアウトされないようにする）
                     update_session_auth_hash(request, user)
 
                 logger.debug(f"ユーザー情報を更新しました: {new_email if email_updated else 'メール変更なし'}")
