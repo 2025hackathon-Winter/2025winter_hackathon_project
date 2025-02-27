@@ -16,7 +16,7 @@ from django.views import View
 from remind.models import MyGoods
 from datetime import datetime,timedelta
 # LINE連携
-import requests
+# import requests
 from django.http import JsonResponse
 
 
