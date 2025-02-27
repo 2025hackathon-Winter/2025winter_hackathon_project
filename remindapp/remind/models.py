@@ -86,8 +86,8 @@ class RegistGoods(models.Model):
 
 class MyGoods(models.Model):
     id=models.SmallAutoField(primary_key=True) # 2025/2/22 うっちゃん追加
-    uid=models.ForeignKey(CustomUsers, on_delete=models. CASCADE) # 2025/2/22 うっちゃん追加
-    goods=models.ForeignKey (RegistGoods,on_delete=models.CASCADE)
+    uid=models.ForeignKey(CustomUsers, on_delete=models. PROTECT) # 2025/2/22 うっちゃん追加
+    goods=models.ForeignKey(RegistGoods,on_delete=models.PROTECT)
     goods_name=models.CharField(max_length=255, verbose_name="管理物品名") #←管理画面で見やすくするために追記 アナザー
     category=models.CharField(max_length=255, verbose_name="カテゴリ")
     purchase_date=models.DateField(verbose_name="購入日")

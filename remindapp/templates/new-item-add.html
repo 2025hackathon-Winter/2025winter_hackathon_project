@@ -42,7 +42,10 @@
                 <option value="3">その他</option>
             </select>
         </div>
-        
+            <!-- うっちゃん追加 -->
+            {% if error_message %}
+                <p class="error">{{ error_message }}</p>
+            {% endif %}         
             <button type="submit">登録</button>
         </form>
     </div>

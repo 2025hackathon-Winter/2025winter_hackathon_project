@@ -129,25 +129,27 @@ LOGIN_URL = '/login/'
 
 AUTH_USER_MODEL = "remind.CustomUsers"
 
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "handlers": {
         "console": {
-            "level": "DEBUG",
+            "level": "DEBUG",  # ← DEBUGレベルのログを出力する
             "class": "logging.StreamHandler",
         },
     },
     "loggers": {
-        "django": {
+        "django": {  # Djangoのログ
             "handlers": ["console"],
-            "level": "DEBUG",
-            "propagate": True,
+            "level": "INFO",  # INFO以上にしてSQLログを抑制
+            "propagate": False,
         },
-        "__main__": {  # 自分のコード用
+        "remind": {  # ← 自分のアプリ名
             "handlers": ["console"],
-            "level": "DEBUG",
-            "propagate": True,
+            "level": "DEBUG",  # ← DEBUGレベルのログを出す
+            "propagate": False,
         },
     },
 }
+
